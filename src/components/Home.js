@@ -7,7 +7,6 @@ import logo from "../assets/logofanstore.png"
 import userIcon from "../assets/iconuser.png"
 import cartIcon from "../assets/iconcart.png"
 import homeIcon from "../assets/iconhome.png"
-import UserFooterIcon from "../assets/iconuserfooter.png"
 import ordersIcon from "../assets/iconorder.png"
 
 
@@ -151,11 +150,11 @@ export default function Home() {
                         <p>Início</p>
                     </Option>
                     <Option>
-                        <img src={UserFooterIcon} alt="user-icon" onClick={() => navigate("/")} />
+                        <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
                         <p>Histórico</p>
                     </Option>
                     <Option>
-                        <img src={ordersIcon} alt="order-icon" onClick={() => navigate("/user")} />
+                        <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
                         <p>Usuário</p>
                     </Option>
                 </Footer>
@@ -199,14 +198,15 @@ const Menu = styled.div`
     color: #ffffff;
     margin-left: 10px;
     margin-bottom: 10px;
-    //overflow-x: scroll;
-
+    overflow-x: scroll;
 
     p {
         border: 1px solid #ffffff;
         border-radius: 24px;
         padding: 7px;
         margin-left: 8px;
+        display: flex;
+        width: max-content;
     }
 `
 
@@ -264,9 +264,9 @@ const ContainerProducts = styled.div`
 
 const Footer = styled.footer`
     width: 375px;
-    height: 57px;
+    height: 67px;
     border: 1px solid #ffffff;
-    background-color: #e5e5e5;
+    background:#2D7AEF;
     display: flex;
     justify-content: space-around;
 `
@@ -279,8 +279,8 @@ const Option = styled.div`
     align-items: center;
 
     img {
-        width: 24px;
-        height: 24px;
+        width: 25px;
+        height: 25px;
         :hover{
                 cursor: pointer;
                 filter: brightness(0.9);
@@ -288,8 +288,8 @@ const Option = styled.div`
     }
 
      p {
-        color: #4A4A4A;
-        font-size: 18px;
+        color: #ffffff;
+        font-size: 15px;
         text-align: center;
         margin-top: 5px;
     }
