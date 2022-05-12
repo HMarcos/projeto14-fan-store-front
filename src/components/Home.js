@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import API_LINK from '../data/links';
+import { Oval } from "react-loader-spinner";
 
 import logo from "../assets/logofanstore.png"
 import userIcon from "../assets/iconuser.png"
@@ -13,22 +14,43 @@ import ordersIcon from "../assets/iconorder.png"
 
 export default function Home() {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
-
-    const categories = ["Canecas", "Camisetas", "Livros", "Pôster", "Quadrinhos", "Decoração"]
-    const franchises = ["Marvel", "Harry Potter", "DC Comics", "Senhor dos anéis", "Star Wars", "Pokémon"]
+    const [categories, setCategories] = useState([]);
+    const [franchises, setFranchises] = useState([]);
     
     useEffect(() => {
-        setLoading(true)
         const promise = axios.get(`${API_LINK}/products`);
         promise.then((res) => {
             setLoading(false)
-            console.log(res.data[0].price.$numberDecimal);
             setProducts(res.data);
         })
         promise.catch(() => {
             alert('Não foi possível carregar os produtos.')
+            setLoading(false)
+        })
+    }, []);
+
+    useEffect(() => {
+        const promise = axios.get(`${API_LINK}/categories`);
+        promise.then((res) => {
+            setLoading(false)
+            setCategories(res.data);
+        })
+        promise.catch(() => {
+            alert('Não foi possível carregar as categorias.')
+            setLoading(false)
+        })
+    }, []);
+
+    useEffect(() => {
+        const promise = axios.get(`${API_LINK}/franchises`);
+        promise.then((res) => {
+            setLoading(false)
+            setFranchises(res.data);
+        })
+        promise.catch(() => {
+            alert('Não foi possível carregar as franquias.')
             setLoading(false)
         })
     }, []);
@@ -42,16 +64,16 @@ export default function Home() {
                     <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/chart")} className="icon" />
                 </Container>
                 <Menu>
-                    {categories.map((categorie) =>
+                    {categories.map(({name}) =>
                         <div>
-                            <p>{categorie}</p>
+                            <p>{name}</p>
                         </div>
                     )}
                 </Menu>
                 <Menu>
-                    {franchises.map((franchise) =>
+                    {franchises.map(({name}) =>
                         <div>
-                            <p>{franchise}</p>
+                            <p>{name}</p>
                         </div>
                     )}
                 </Menu>
