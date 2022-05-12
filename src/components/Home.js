@@ -18,7 +18,7 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [franchises, setFranchises] = useState([]);
-    
+
     useEffect(() => {
         const promise = axios.get(`${API_LINK}/products`);
         promise.then((res) => {
@@ -64,53 +64,58 @@ export default function Home() {
                     <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/chart")} className="icon" />
                 </Container>
                 <Menu>
-                    {categories.map(({name}) =>
+                    {categories.map(({ name }) =>
                         <div>
                             <p>{name}</p>
                         </div>
                     )}
                 </Menu>
                 <Menu>
-                    {franchises.map(({name}) =>
+                    {franchises.map(({ name }) =>
                         <div>
                             <p>{name}</p>
                         </div>
                     )}
                 </Menu>
             </Header>
-            { loading ? (
-                <p>Carregando...</p>
+            {loading ? (
+                <>
+                    <Loading>
+                        <p>Carregando...</p>
+                        <Oval color="#FFFFFF" height={80} width={80} />
+                    </Loading>
+                </>
             ) : (
                 <>
-            <Products>
-                {products.map(({ url, name, price, idFranchise }) => {
-                    return (
-                        <ContainerProducts key={name}>
-                            <img src={url} alt="Imagem do produto"></img>
-                            <p>{name}</p>
-                            <div className="container">
-                                <p className="franchise">{idFranchise}</p>
-                                <p className="price">R$ {price.$numberDecimal}</p>
-                            </div>
-                        </ContainerProducts>
-                    )
-                })}
-            </Products>
-            <Footer>
-                <Option>
-                    <img src={homeIcon} alt="home-icon" onClick={() => navigate("/")} />
-                    <p>Início</p>
-                </Option>
-                <Option>
-                    <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
-                    <p>Histórico</p>
-                </Option>
-                <Option>
-                    <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
-                    <p>Usuário</p>
-                </Option>
-            </Footer>
-            </>
+                    <Products>
+                        {products.map(({ url, name, price, idFranchise }) => {
+                            return (
+                                <ContainerProducts key={name}>
+                                    <img src={url} alt="Imagem do produto"></img>
+                                    <p>{name}</p>
+                                    <div className="container">
+                                        <p className="franchise">{idFranchise}</p>
+                                        <p className="price">R$ {price.$numberDecimal}</p>
+                                    </div>
+                                </ContainerProducts>
+                            )
+                        })}
+                    </Products>
+                    <Footer>
+                        <Option>
+                            <img src={homeIcon} alt="home-icon" onClick={() => navigate("/")} />
+                            <p>Início</p>
+                        </Option>
+                        <Option>
+                            <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
+                            <p>Histórico</p>
+                        </Option>
+                        <Option>
+                            <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
+                            <p>Usuário</p>
+                        </Option>
+                    </Footer>
+                </>
             )}
         </>
     )
@@ -246,5 +251,15 @@ const Option = styled.div`
         font-size: 15px;
         text-align: center;
         margin-top: 5px;
+    }
+`
+
+const Loading = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+p {
+        font-size: 20px;
+        padding: 15px;
     }
 `
