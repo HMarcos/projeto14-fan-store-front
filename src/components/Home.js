@@ -101,20 +101,7 @@ export default function Home() {
                             )
                         })}
                     </Products>
-                    <Footer>
-                        <Option>
-                            <img src={homeIcon} alt="home-icon" onClick={() => navigate("/")} />
-                            <p>Início</p>
-                        </Option>
-                        <Option>
-                            <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
-                            <p>Histórico</p>
-                        </Option>
-                        <Option>
-                            <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
-                            <p>Usuário</p>
-                        </Option>
-                    </Footer>
+                    
                 </>
             )}
         </>
@@ -219,15 +206,6 @@ const ContainerProducts = styled.div`
     .franchise {
         color: #4F4F4F;
     }
-`
-
-const Footer = styled.footer`
-    width: 375px;
-    height: 67px;
-    border: 1px solid #ffffff;
-    background:#2D7AEF;
-    display: flex;
-    justify-content: space-around;
 `
 
 const Option = styled.div`
