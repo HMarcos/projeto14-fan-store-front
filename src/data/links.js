@@ -1,3 +1,3 @@
-const API_LINK = "https://fanstore.herokuapp.com"
+const API_LINK = "http://localhost:5500"
 
 export default API_LINK;

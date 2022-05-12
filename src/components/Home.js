@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-//import { useState, useContext } from "react";
-//import axios from "axios";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import API_LINK from '../data/links';
 
 import logo from "../assets/logofanstore.png"
 import userIcon from "../assets/iconuser.png"
@@ -12,152 +13,83 @@ import ordersIcon from "../assets/iconorder.png"
 
 export default function Home() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [products, setProducts] = useState([]);
 
     const categories = ["Canecas", "Camisetas", "Livros", "Pôster", "Quadrinhos", "Decoração"]
     const franchises = ["Marvel", "Harry Potter", "DC Comics", "Senhor dos anéis", "Star Wars", "Pokémon"]
-    const products = [{
-        name: "Caneca Mágica Mapa Maroto Harry Potter",
-        description: "Sua estampa é revelada após o uso de liquido quente",
-        price: 50,
-        url: "https://m.media-amazon.com/images/I/618yvUFvSCL._AC_SL1202_.jpg",
-        franchise: "Harry Potter",
-        idCategory: "Canecas",
-        uniqueQty: 20,
-        pQty: 0,
-        mQty: 0,
-        gQty: 0,
-    },
-    {
-        name: "Camiseta Spider Man",
-        description: "Camiseta gola V, 100% algodão, com a estampa do homem aranha",
-        price: 60,
-        url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg",
-        franchise: "Marvel",
-        idCategory: "Camisetas",
-        uniqueQty: 0,
-        pQty: 5,
-        mQty: 8,
-        gQty: 7,
-    }, {
-        name: "Camiseta Spider Man",
-        description: "Camiseta gola V, 100% algodão, com a estampa do homem aranha",
-        price: 60,
-        url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg",
-        franchise: "Marvel",
-        idCategory: "Camisetas",
-        uniqueQty: 0,
-        pQty: 5,
-        mQty: 8,
-        gQty: 7,
-    }, {
-        name: "Camiseta Spider Man",
-        description: "Camiseta gola V, 100% algodão, com a estampa do homem aranha",
-        price: 60,
-        url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg",
-        franchise: "Marvel",
-        idCategory: "Camisetas",
-        uniqueQty: 0,
-        pQty: 5,
-        mQty: 8,
-        gQty: 7,
-    }, {
-        name: "Camiseta Spider Man",
-        description: "Camiseta gola V, 100% algodão, com a estampa do homem aranha",
-        price: 60,
-        url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg",
-        franchise: "Marvel",
-        idCategory: "Camisetas",
-        uniqueQty: 0,
-        pQty: 5,
-        mQty: 8,
-        gQty: 7,
-    }, {
-        name: "Camiseta Spider Man",
-        description: "Camiseta gola V, 100% algodão, com a estampa do homem aranha",
-        price: 60,
-        url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg",
-        franchise: "Marvel",
-        idCategory: "Camisetas",
-        uniqueQty: 0,
-        pQty: 5,
-        mQty: 8,
-        gQty: 7,
-    }, {
-        name: "Camiseta Spider Man",
-        description: "Camiseta gola V, 100% algodão, com a estampa do homem aranha",
-        price: 60,
-        url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg",
-        franchise: "Marvel",
-        idCategory: "Camisetas",
-        uniqueQty: 0,
-        pQty: 5,
-        mQty: 8,
-        gQty: 7,
-    }, {
-        name: "Camiseta Spider Man",
-        description: "Camiseta gola V, 100% algodão, com a estampa do homem aranha",
-        price: 60,
-        url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg",
-        franchise: "Marvel",
-        idCategory: "Camisetas",
-        uniqueQty: 0,
-        pQty: 5,
-        mQty: 8,
-        gQty: 7,
-    }]
+    
+    useEffect(() => {
+        setLoading(true)
+        const promise = axios.get(`${API_LINK}/products`);
+        promise.then((res) => {
+            setLoading(false)
+            console.log(res.data[0].price.$numberDecimal);
+            setProducts(res.data);
+        })
+        promise.catch(() => {
+            alert('Não foi possível carregar os produtos.')
+            setLoading(false)
+        })
+    }, []);
 
     return (
         <>
-                <Header>
-                    <Container>
-                        <img src={logo} alt="logo" />
-                        <img src={userIcon} alt="user-icon" onClick={() => navigate("/user")} className="icon" />
-                        <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/chart")} className="icon" />
-                    </Container>
-                    <Menu>
-                        {categories.map((categorie) =>
-                            <div>
-                                <p>{categorie}</p>
+            <Header>
+                <Container>
+                    <img src={logo} alt="logo" />
+                    <img src={userIcon} alt="user-icon" onClick={() => navigate("/user")} className="icon" />
+                    <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/chart")} className="icon" />
+                </Container>
+                <Menu>
+                    {categories.map((categorie) =>
+                        <div>
+                            <p>{categorie}</p>
+                        </div>
+                    )}
+                </Menu>
+                <Menu>
+                    {franchises.map((franchise) =>
+                        <div>
+                            <p>{franchise}</p>
+                        </div>
+                    )}
+                </Menu>
+            </Header>
+            { loading ? (
+                <p>Carregando...</p>
+            ) : (
+                <>
+            <Products>
+                {products.map(({ url, name, price, idFranchise }) => {
+                    return (
+                        <ContainerProducts key={name}>
+                            <img src={url} alt="Imagem do produto"></img>
+                            <p>{name}</p>
+                            <div className="container">
+                                <p className="franchise">{idFranchise}</p>
+                                <p className="price">R$ {price.$numberDecimal}</p>
                             </div>
-                        )}
-                    </Menu>
-                    <Menu>
-                        {franchises.map((franchise) =>
-                            <div>
-                                <p>{franchise}</p>
-                            </div>
-                        )}
-                    </Menu>
-                </Header>
-                <Products>
-
-                    {products.map(({ url, name, price, franchise }) => {
-                        return (
-                            <ContainerProducts key={name}>
-                                <img src={url} alt="Imagem do produto"></img>
-                                <p>{name}</p>
-                                <div className="container">
-                                    <p className="franchise">{franchise}</p>
-                                    <p className="price">R$ {price}</p>
-                                </div>
-                            </ContainerProducts>
-                        )
-                    })}
-                </Products>
-                <Footer>
-                    <Option>
-                        <img src={homeIcon} alt="home-icon" onClick={() => navigate("/")} />
-                        <p>Início</p>
-                    </Option>
-                    <Option>
-                        <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
-                        <p>Histórico</p>
-                    </Option>
-                    <Option>
-                        <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
-                        <p>Usuário</p>
-                    </Option>
-                </Footer>
+                        </ContainerProducts>
+                    )
+                })}
+            </Products>
+            <Footer>
+                <Option>
+                    <img src={homeIcon} alt="home-icon" onClick={() => navigate("/")} />
+                    <p>Início</p>
+                </Option>
+                <Option>
+                    <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
+                    <p>Histórico</p>
+                </Option>
+                <Option>
+                    <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
+                    <p>Usuário</p>
+                </Option>
+            </Footer>
+            </>
+            )}
         </>
     )
 
