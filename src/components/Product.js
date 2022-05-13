@@ -13,7 +13,7 @@ export default function Product() {
     const { productId } = useParams();
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState([]);
-    const [size, setSize] = useState("gQty")
+    const [size, setSize] = useState("");
 
     useEffect(() => {
         const promise = axios.get(`${API_LINK}/product/${productId}`);
