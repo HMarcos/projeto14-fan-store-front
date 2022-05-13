@@ -1,8 +1,14 @@
+import { useContext } from "react";
 import styled from "styled-components";
+
+import RegisterContext from "../contexts/RegisterContext";
 
 import Back from "./../assets/iconarrow.png";
 
 function Address() {
+    const { register, setRegister } = useContext(RegisterContext);
+    console.log(register);
+
     return (
         <>
             <Header>
@@ -11,7 +17,7 @@ function Address() {
             </Header>
 
             <Content>
-                <AddressForm>
+                <AddressForm id="address-form">
                     <label htmlFor="CEP">CEP</label>
                     <input
                         type="text"
@@ -21,6 +27,8 @@ function Address() {
                         pattern="^[0-9]{5}-[0-9]{3}$"
                         title="O CEP deve serguir o padrão: 00000-000"
                         required
+                        value={register.address.cep}
+                        onChange={(event) => setRegister({ ...register, address: { ...register.address, cep: event.target.value } })}
                     >
                     </input>
 
@@ -29,6 +37,8 @@ function Address() {
                         type="text"
                         id="Logradouro"
                         required
+                        value={register.address.street}
+                        onChange={(event) => setRegister({ ...register, address: { ...register.address, street: event.target.value } })}
                     >
                     </input>
 
@@ -38,6 +48,8 @@ function Address() {
                         id="Numero"
                         pattern="^[0-9]+[a-zA-Z]*$"
                         required
+                        value={register.address.number}
+                        onChange={(event) => setRegister({ ...register, address: { ...register.address, number: event.target.value } })}
                     >
                     </input>
 
@@ -46,6 +58,8 @@ function Address() {
                         type="text"
                         id="Bairro"
                         required
+                        value={register.address.district}
+                        onChange={(event) => setRegister({ ...register, address: { ...register.address, district: event.target.value } })}
                     >
                     </input>
 
@@ -54,6 +68,8 @@ function Address() {
                         type="text"
                         id="Cidade"
                         required
+                        value={register.address.city}
+                        onChange={(event) => setRegister({ ...register, address: { ...register.address, city: event.target.value } })}
                     >
                     </input>
 
@@ -61,6 +77,8 @@ function Address() {
                     <input
                         type="text"
                         id="Complemento"
+                        value={register.address.complement}
+                        onChange={(event) => setRegister({ ...register, address: { ...register.address, complement: event.target.value } })}
                     >
                     </input>
 
@@ -69,14 +87,15 @@ function Address() {
                         type="text"
                         id="Pais"
                         required
+                        value={register.address.country}
+                        onChange={(event) => setRegister({ ...register, address: { ...register.address, country: event.target.value } })}
                     >
                     </input>
-
                 </AddressForm>
             </Content>
 
             <Footer>
-                <button>Cadastrar</button>
+                <button type="submit" form="address-form">Cadastrar</button>
             </Footer>
         </>
     )

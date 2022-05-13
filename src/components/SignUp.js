@@ -1,8 +1,15 @@
+import { useContext } from "react";
 import styled from "styled-components";
+
+import RegisterContext from "../contexts/RegisterContext";
 
 import logo from "../assets/logofanstore-azul.png"
 
 function SignUp() {
+
+    const {register, setRegister} = useContext(RegisterContext);
+
+    console.log(register);
 
     return (
         <Content>
@@ -13,6 +20,8 @@ function SignUp() {
                     type="text"
                     placeholder="Nome"
                     required
+                    value={register.name}
+                    onChange={(event) => setRegister({...register, name: event.target.value})}
                 >
                 </input>
 
@@ -20,6 +29,8 @@ function SignUp() {
                     type="e-mail"
                     placeholder="E-mail"
                     required
+                    value={register.email}
+                    onChange={(event) => setRegister({...register, email: event.target.value})}
                 >
                 </input>
 
@@ -28,6 +39,8 @@ function SignUp() {
                     placeholder="Senha"
                     minLength="8"
                     required
+                    value={register.password}
+                    onChange={(event) => setRegister({...register, password: event.target.value})}
                 >
                 </input>
 
@@ -36,6 +49,8 @@ function SignUp() {
                     placeholder="Confirme sua senha"
                     minLength="8"
                     required
+                    value={register.confirmationPassword}
+                    onChange={(event) => setRegister({...register, confirmationPassword: event.target.value})}
                 >
                 </input>
 
@@ -47,6 +62,8 @@ function SignUp() {
                     pattern="^[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}$"
                     title="O CPF deve ser o padrão: 000.000.000-00"
                     required
+                    value={register.cpf}
+                    onChange={(event) => setRegister({...register, cpf: event.target.value})}
                 >
                 </input>
 
@@ -56,6 +73,8 @@ function SignUp() {
                     pattern="^\([0-9]{2}\)\s?[0-9]{4,5}-[0-9]{4}$"
                     title="O Telefone deve serguir o padrão: (99)99999-9999"
                     required
+                    value={register.phone}
+                    onChange={(event) => setRegister({...register, phone: event.target.value})}
                 >
                 </input>
                 <button type="submit">Prosseguir</button>
@@ -128,8 +147,8 @@ const RegisterForm = styled.form`
 
         color: #FFF;
 
-        font-weight: 500;
-        font-size: 16px;
+        font-weight: 700;
+        font-size: 18px;
         line-height: 20px;
 
         display: flex;
