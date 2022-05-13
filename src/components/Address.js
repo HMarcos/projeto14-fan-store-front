@@ -1,23 +1,52 @@
 import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 import RegisterContext from "../contexts/RegisterContext";
 
 import Back from "./../assets/iconarrow.png";
 
+import API_LINK from "./../data/links"
+
 function Address() {
     const { register, setRegister } = useContext(RegisterContext);
-    console.log(register);
+
+    const navigate = useNavigate();
+
+    function toRegister(event) {
+        event.preventDefault();
+
+        //setLoading(true);
+
+        const promise = axios.post(`${API_LINK}/sign-up`, register);
+
+        promise.then((response) => {
+            navigate("/sign-in");
+        });
+
+        promise.catch((error) => {
+            const { status, data } = error.response;
+
+            alert(`Não foi possível realizar o cadastro.
+            Erro ${status}: ${data} `);
+
+            //setLoading(false);
+        })
+    }
+
 
     return (
         <>
             <Header>
-                <img src={Back} alt="voltar" />
+                <Link to="/sign-up">
+                    <img src={Back} alt="voltar" />
+                </Link>
                 <h1>Adicione um endereço</h1>
             </Header>
 
             <Content>
-                <AddressForm id="address-form">
+                <AddressForm id="address-form" onSubmit={toRegister}>
                     <label htmlFor="CEP">CEP</label>
                     <input
                         type="text"
@@ -73,12 +102,12 @@ function Address() {
                     >
                     </input>
 
-                    <label htmlFor="Complemento">Complemento</label>
+                    <label htmlFor="Estado">Estado</label>
                     <input
                         type="text"
-                        id="Complemento"
-                        value={register.address.complement}
-                        onChange={(event) => setRegister({ ...register, address: { ...register.address, complement: event.target.value } })}
+                        id="Estado"
+                        value={register.address.state}
+                        onChange={(event) => setRegister({ ...register, address: { ...register.address, state: event.target.value } })}
                     >
                     </input>
 
@@ -182,8 +211,6 @@ const AddressForm = styled.form`
         font-weight: 500;
         font-size: 16px;
         line-height: 24px;
-        /* identical to box height, or 150% */
-
 
         color: #333A42;
 

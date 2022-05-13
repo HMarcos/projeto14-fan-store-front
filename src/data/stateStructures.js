@@ -11,7 +11,7 @@ export const registerStructure = {
         number:"",
         district:"",
         city: "",
-        complement:"",
+        state:"",
         country:""
     }
 }
