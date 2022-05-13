@@ -47,26 +47,42 @@ export default function Product() {
             <>
                 <Content>
                     <>
-                    <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
-                    <img src={product.url} alt="Imagem do produto"></img>
-                    <h1>{product.name}</h1>
-                    <h2>R$ {product.price.$numberDecimal}</h2>
-                    <p>{product.description}</p>
-                    <Selection>
-                    <p onClick={(() => setSize('pQty'))}>P</p>
-                    <p onClick={(() => setSize('mQty'))}>M</p>
-                    <p onClick={(() => setSize('gQty'))}>G</p>
-                        <select>
-                            {mappingProductQty(product[size]).map((qty) =>
-                                <option>
-                                    {qty}
-                                </option>
+                        <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
+                        <img src={product.url} alt="Imagem do produto"></img>
+                        <h1>{product.name}</h1>
+                        <h2>R$ {product.price.$numberDecimal}</h2>
+                        <p>{product.description}</p>
+                        <Selection>
+                            {product.idCategory === 1 ? (
+                                <>
+                                    <p onClick={(() => setSize('pQty'))}>P</p>
+                                    <p onClick={(() => setSize('mQty'))}>M</p>
+                                    <p onClick={(() => setSize('gQty'))}>G</p>
+                                    <select>
+                                        {mappingProductQty(product[size]).map((qty) =>
+                                            <option>
+                                                {qty}
+                                            </option>
+                                        )}
+                                    </select>
+                                </>
+                            ) : (
+                                <>
+                                    <h1>Tamanho único:</h1>
+                                    <select>
+                                        {mappingProductQty(product.uniqueQty).map((qty) =>
+                                            <option>
+                                                {qty}
+                                            </option>
+                                        )}
+                                    </select>
+                                </>
                             )}
-                        </select>
-                    </Selection>
-                    <Footer>
-                        <button>Adicionar ao carrinho</button>
-                    </Footer>
+
+                        </Selection>
+                        <Footer>
+                            <button>Adicionar ao carrinho</button>
+                        </Footer>
                     </>
                 </Content>
             </>
