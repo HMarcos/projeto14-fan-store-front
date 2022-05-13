@@ -15,3 +15,7 @@ export const registerStructure = {
         country:""
     }
 }
+
+export const userStructure = {
+    token: ""
+}

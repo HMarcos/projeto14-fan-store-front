@@ -11,29 +11,34 @@ import SignUp from "./SignUp";
 import Address from "./Address";
 
 import RegisterContext from "../contexts/RegisterContext";
+import UserContext from "../contexts/UserContext";
 
-import {registerStructure} from "../data/stateStructures";
+import { registerStructure, userStructure } from "../data/stateStructures";
 
 function App() {
 
-    const [register, setRegister] = useState({...registerStructure});
+    const [register, setRegister] = useState({ ...registerStructure });
 
+    const [user, setUser] = useState({ ...userStructure });
+    
     return (
         <>
             <Reset />
             <GlobalStyle />
-            <RegisterContext.Provider value={{register, setRegister}}>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/user" element={<User />} />
-                        <Route path="/chart" element={<Chart />} />
-                        <Route path="/sign-in" element={<SignIn />} />
-                        <Route path="/sign-up" element={<SignUp />} />
-                        <Route path="/sign-up/address" element={<Address />} />
-                    </Routes>
-                </BrowserRouter>
-            </RegisterContext.Provider>
+            <UserContext.Provider value={{user, setUser}}>
+                <RegisterContext.Provider value={{ register, setRegister }}>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/user" element={<User />} />
+                            <Route path="/chart" element={<Chart />} />
+                            <Route path="/sign-in" element={<SignIn />} />
+                            <Route path="/sign-up" element={<SignUp />} />
+                            <Route path="/sign-up/address" element={<Address />} />
+                        </Routes>
+                    </BrowserRouter>
+                </RegisterContext.Provider>
+            </UserContext.Provider>
         </>
     )
 }
