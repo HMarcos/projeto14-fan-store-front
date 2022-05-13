@@ -55,6 +55,8 @@ export default function Home() {
         })
     }, []);
 
+    console.log(products)
+
     return (
         <>
             <Header>
@@ -88,20 +90,34 @@ export default function Home() {
             ) : (
                 <>
                     <Products>
-                        {products.map(({ url, name, price, idFranchise }) => {
+                        {products.map(({ url, name, price, franchises }) => {
                             return (
                                 <ContainerProducts key={name}>
                                     <img src={url} alt="Imagem do produto"></img>
                                     <p>{name}</p>
                                     <div className="container">
-                                        <p className="franchise">{idFranchise}</p>
+                                        <img src={franchises[0].logo} alt="Imagem da franquia" className="franchiseLogo" />
+                                        <p className="franchise">{franchises[0].name}</p>
                                         <p className="price">R$ {price.$numberDecimal}</p>
                                     </div>
                                 </ContainerProducts>
                             )
                         })}
                     </Products>
-                    
+                    <Footer>
+                        <Option>
+                            <img src={homeIcon} alt="home-icon" onClick={() => navigate("/")} />
+                            <p>Início</p>
+                        </Option>
+                        <Option>
+                            <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
+                            <p>Histórico</p>
+                        </Option>
+                        <Option>
+                            <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
+                            <p>Usuário</p>
+                        </Option>
+                    </Footer>
                 </>
             )}
         </>
@@ -130,6 +146,14 @@ const Header = styled.header`
     }
 `
 
+const Footer = styled.footer`
+    width: 375px;
+    height: 67px;
+    border: 1px solid #ffffff;
+    background:#2D7AEF;
+    display: flex;
+    justify-content: space-around;
+`
 
 
 const Container = styled.div`
@@ -158,7 +182,6 @@ const Menu = styled.div`
 
 const Products = styled.body`
     max-width: 375px;  
-    height: 100vh; 
     background:#ffffff;
     display: flex;
     flex-wrap:wrap;
@@ -170,7 +193,7 @@ const ContainerProducts = styled.div`
     border: 1px solid #E5E5E5;
     border-radius: 10%;
     width: 160px;
-    height: 200px;
+    height: fix-content;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -205,6 +228,12 @@ const ContainerProducts = styled.div`
 
     .franchise {
         color: #4F4F4F;
+        font-size: 12px;
+    }
+
+    .franchiseLogo{
+        width:25px;
+        height:25px;
     }
 `
 
