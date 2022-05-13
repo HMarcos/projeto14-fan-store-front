@@ -88,9 +88,9 @@ export default function Home() {
             ) : (
                 <>
                     <Products>
-                        {products.map(({ url, name, price, idFranchise }) => {
+                        {products.map(({ url, name, price, idFranchise, _id }) => {
                             return (
-                                <ContainerProducts key={name}>
+                                <ContainerProducts key={name} onClick={() => navigate(`/product/${_id}`)}>
                                     <img src={url} alt="Imagem do produto"></img>
                                     <p>{name}</p>
                                     <div className="container">
