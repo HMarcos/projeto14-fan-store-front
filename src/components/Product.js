@@ -2,12 +2,14 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Oval } from "react-loader-spinner";
 
 import returnIcon from "../assets/iconreturn.png"
 import API_LINK from '../data/links';
 
 export default function Product() {
+    const navigate = useNavigate();
     const { productId } = useParams();
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState([]);
@@ -33,19 +35,6 @@ export default function Product() {
         return qty;
     }
 
-    /*<Selection>
-                        <p onClick={setSize("pQty")}>P</p>
-                        <p onClick={setSize("mQty")}>M</p>
-                        <p onClick={setSize("gQty")}>G</p>
-                        <select>
-                            {mappingProductQty(product[size]).map((qty) =>
-                                <option>
-                                    {qty}
-                                </option>
-                            )}
-                        </select>
-                    </Selection>*/
-
     return (
         loading ? (
             <>
@@ -58,15 +47,15 @@ export default function Product() {
             <>
                 <Content>
                     <>
-                    <img src={returnIcon} alt="Seta para retornar" className="icon"></img>
+                    <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
                     <img src={product.url} alt="Imagem do produto"></img>
                     <h1>{product.name}</h1>
                     <h2>R$ {product.price.$numberDecimal}</h2>
                     <p>{product.description}</p>
                     <Selection>
-                    <p>P</p>
-                    <p>M</p>
-                    <p>G</p>
+                    <p onClick={(() => setSize('pQty'))}>P</p>
+                    <p onClick={(() => setSize('mQty'))}>M</p>
+                    <p onClick={(() => setSize('gQty'))}>G</p>
                         <select>
                             {mappingProductQty(product[size]).map((qty) =>
                                 <option>
