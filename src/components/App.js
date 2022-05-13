@@ -6,6 +6,7 @@ import GlobalStyle from "./GlobalStyle";
 import Home from "./Home";
 import User from "./User"
 import Chart from "./Chart"
+import Product from "./Product"
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Address from "./Address";
@@ -14,6 +15,7 @@ import RegisterContext from "../contexts/RegisterContext";
 import UserContext from "../contexts/UserContext";
 
 import { registerStructure, userStructure } from "../data/stateStructures";
+
 
 function App() {
 
@@ -35,6 +37,7 @@ function App() {
                             <Route path="/sign-in" element={<SignIn />} />
                             <Route path="/sign-up" element={<SignUp />} />
                             <Route path="/sign-up/address" element={<Address />} />
+                            <Route path="/product/:productId" element={< Product />} />
                         </Routes>
                     </BrowserRouter>
                 </RegisterContext.Provider>
