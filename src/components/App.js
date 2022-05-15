@@ -10,6 +10,7 @@ import Product from "./Product"
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Address from "./Address";
+import Cart from "./Cart";
 
 import RegisterContext from "../contexts/RegisterContext";
 import UserContext from "../contexts/UserContext";
@@ -37,7 +38,8 @@ function App() {
                             <Route path="/sign-in" element={<SignIn />} />
                             <Route path="/sign-up" element={<SignUp />} />
                             <Route path="/sign-up/address" element={<Address />} />
-                            <Route path="/product/:productId" element={< Product />} />
+                            <Route path="/product/:productId" element={<Product />} />
+                            <Route path="/cart" element={<Cart />} />
                         </Routes>
                     </BrowserRouter>
                 </RegisterContext.Provider>
