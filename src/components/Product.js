@@ -17,12 +17,7 @@ export default function Product() {
     const [product, setProduct] = useState([]);
     const [size, setSize] = useState("unique");
     const [qty, setQty] = useState("");
-    /*const [cart, setCart] = useState({ _id: "", products: {d do Produto, Quantidade}];
-        * status (aberto, fechado);
-        * Valor total;})*/
     const { user } = useContext(UserContext);
-    console.log(user);
-    console.log(qty);
 
     useEffect(() => {
         const promise = axios.get(`${API_LINK}/product/${productId}`);
@@ -54,18 +49,12 @@ export default function Product() {
         const product = {
             productId,
             qty,
-            type: size.slice(0,1).toUpperCase()
+            type: size === "unique" ? size : size.slice(0,1).toUpperCase() 
         }
 
         console.log(product);
 
         const promise = axios.put(`${API_LINK}/cart`, product, config);
-
-        /*if (!user.token) {
-            alert('Você precisa estar logado!');
-            navigate('/sign-in');
-            return;
-        }*/
 
         promise.then((response) => {
             alert("Produto adicionado ao carrinho com sucesso!");
@@ -89,18 +78,6 @@ export default function Product() {
 
             }
         })
-
-        /*setLoading(true)
-       
-        const promise = axios.post(`${API_LINK}/cart`, cart, config);
-        promise.then((res) => {
-            setLoading(false)
-            navigate('/cart');
-        })
-        promise.catch(() => {
-            alert('Não foi possível adicionar o produto no carrinho.')
-            setLoading(false)
-        })*/
 
     }
 
