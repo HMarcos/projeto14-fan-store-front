@@ -67,7 +67,7 @@ export default function Product() {
             alert('Não foi possível adicionar o produto no carrinho.')
             setLoading(false)
         })*/
-        
+
     }
 
     return (
@@ -82,39 +82,41 @@ export default function Product() {
             <>
                 <Content>
                     <>
-                        <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
-                        <img src={product.url} alt="Imagem do produto"></img>
-                        <h1>{product.name}</h1>
-                        <h2>R$ {product.price.$numberDecimal}</h2>
-                        <p>{product.description}</p>
-                        <Selection>
-                            {product.idCategory === 1 ? (
-                                <>
-                                    <p onClick={(() => setSize('pQty'))}>P</p>
-                                    <p onClick={(() => setSize('mQty'))}>M</p>
-                                    <p onClick={(() => setSize('gQty'))}>G</p>
-                                    <select onChange={(e) => setQty(e.target.value)}>
-                                        {mappingProductQty(product[size]).map((qty) =>
-                                            <option>
-                                                {qty}
-                                            </option>
-                                        )}
-                                    </select>
-                                </>
-                            ) : (
-                                <>
-                                    <h1>Tamanho único:</h1>
-                                    <select onChange={(e) => setQty(e.target.value)}>
-                                        {mappingProductQty(product.uniqueQty).map((qty) =>
-                                            <option>
-                                                {qty}
-                                            </option>
-                                        )}
-                                    </select>
-                                </>
-                            )}
+                        <main>
+                            <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate(-1))}></img>
+                            <img src={product.url} alt="Imagem do produto"></img>
+                            <h1>{product.name}</h1>
+                            <h2>R$ {product.price.$numberDecimal.replace(".", ",")}</h2>
+                            <p>{product.description}</p>
+                            <Selection>
+                                {product.idCategory === 1 ? (
+                                    <>
+                                        <p onClick={(() => setSize('pQty'))}>P</p>
+                                        <p onClick={(() => setSize('mQty'))}>M</p>
+                                        <p onClick={(() => setSize('gQty'))}>G</p>
+                                        <select onChange={(e) => setQty(e.target.value)}>
+                                            {mappingProductQty(product[size]).map((qty) =>
+                                                <option>
+                                                    {qty}
+                                                </option>
+                                            )}
+                                        </select>
+                                    </>
+                                ) : (
+                                    <>
+                                        <h1>Tamanho único:</h1>
+                                        <select onChange={(e) => setQty(e.target.value)}>
+                                            {mappingProductQty(product.uniqueQty).map((qty) =>
+                                                <option>
+                                                    {qty}
+                                                </option>
+                                            )}
+                                        </select>
+                                    </>
+                                )}
 
-                        </Selection>
+                            </Selection>
+                        </main>
                         <Footer onClick={(() => goToCart())}>
                             <button>Adicionar ao carrinho</button>
                         </Footer>
@@ -134,11 +136,10 @@ p {
         font-size: 20px;
         padding: 15px;
     }
-`
+`;
 
 const Content = styled.div`
     width: 375px;   
-    height:100vh;
     background:#ffffff;
     display: flex;
     flex-direction: column;
@@ -146,18 +147,24 @@ const Content = styled.div`
     font-size: 18px;
     line-height: 22px;
 
+    main{
+        margin-bottom: 88px;
+    }
+
     img {
-        width: 375px;   
+        width: 375px;  
     }
 
     h1 {
         color: #4F4F4F;
         padding: 5px;
+        margin-left: 15px;
     }
 
     h2 {
         color: #2D7AEF;
         padding: 5px;
+        margin-left: 15px;
     }
 
     p {
@@ -168,6 +175,7 @@ const Content = styled.div`
         color: #4F4F4F;
         opacity: 0.9;
         padding: 5px;
+        margin-left: 15px;
     }
 
     button {
@@ -187,13 +195,26 @@ const Content = styled.div`
         opacity: 0.6;
         position:absolute;
     }
-`
+
+`;
 
 const Footer = styled.footer`
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-`
+    align-items: center;
+    height: 78px;
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100vw;
+
+    background-color:  #F6F9FF;
+
+    box-shadow: 0px -19px 38px rgba(58, 76, 130, 0.0722656);
+`;
+
 const Selection = styled.div`
     display:flex;
     margin-top: 15px;
@@ -207,6 +228,18 @@ const Selection = styled.div`
 
     select {
         margin-left: 20px;
-        width: 50px;
+        width: 80px;
+        height: 100%;
+
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 22px;
+
+        color: #4F4F4F;
+
+        text-align: center;
+        display: flex;
+        align-items: center;
+
     }
-`
+`;
