@@ -23,6 +23,23 @@ function SignUp() {
         navigate("/sign-up/address");
     }
 
+    function cpfMask(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+            .replace(/(-\d{2})\d+?$/, '$1')
+    }
+
+    function phoneMask(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/(\d{2})/, '($1) ')
+            .replace(/(\d{5})(\d)/, '$1-$2')
+            .replace(/(-\d{4})\d+?$/, '$1')
+    }
+
     return (
         <Content>
             <Logo src={logo} alt="logo fan store" />
@@ -75,7 +92,10 @@ function SignUp() {
                     title="O CPF deve ser o padrão: 000.000.000-00"
                     required
                     value={register.cpf}
-                    onChange={(event) => setRegister({ ...register, cpf: event.target.value })}
+                    onChange={(event) => {
+                        event.target.value = cpfMask(event.target.value);
+                        setRegister({ ...register, cpf: event.target.value })
+                    }}
                 >
                 </input>
 
@@ -83,12 +103,15 @@ function SignUp() {
                     type="text"
                     placeholder="Telefone"
                     pattern="^\([0-9]{2}\)\s?[0-9]{4,5}-[0-9]{4}$"
-                    title="O Telefone deve serguir o padrão: (99)99999-9999"
+                    title="O Telefone deve serguir o padrão: (99) 99999-9999"
                     required
                     maxLength={15}
                     minLength={14}
                     value={register.phone}
-                    onChange={(event) => setRegister({ ...register, phone: event.target.value })}
+                    onChange={(event) => {
+                        event.target.value = phoneMask(event.target.value);
+                        setRegister({ ...register, phone: event.target.value })
+                    }}
                 >
                 </input>
                 <button type="submit">Prosseguir</button>

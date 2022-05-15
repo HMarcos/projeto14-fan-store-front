@@ -22,12 +22,12 @@ function App() {
     const [register, setRegister] = useState({ ...registerStructure });
 
     const [user, setUser] = useState({ ...userStructure });
-    
+
     return (
         <>
             <Reset />
             <GlobalStyle />
-            <UserContext.Provider value={{user, setUser}}>
+            <UserContext.Provider value={{ user, setUser }}>
                 <RegisterContext.Provider value={{ register, setRegister }}>
                     <BrowserRouter>
                         <Routes>

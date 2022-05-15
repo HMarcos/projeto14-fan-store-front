@@ -22,6 +22,7 @@ function Address() {
         const promise = axios.post(`${API_LINK}/sign-up`, register);
 
         promise.then((response) => {
+            alert("Usuário cadastrado com sucesso!");
             navigate("/sign-in");
         });
 
@@ -33,6 +34,13 @@ function Address() {
 
             //setLoading(false);
         })
+    }
+
+    function cepMask(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/(\d{5})/, '$1-')
+            .replace(/(-\d{3})\d+?$/, '$1')
     }
 
 
@@ -57,7 +65,10 @@ function Address() {
                         title="O CEP deve serguir o padrão: 00000-000"
                         required
                         value={register.address.cep}
-                        onChange={(event) => setRegister({ ...register, address: { ...register.address, cep: event.target.value } })}
+                        onChange={(event) => {
+                            event.target.value = cepMask(event.target.value);
+                            setRegister({ ...register, address: { ...register.address, cep: event.target.value } })
+                        }}
                     >
                     </input>
 
