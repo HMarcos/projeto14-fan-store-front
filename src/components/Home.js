@@ -90,15 +90,19 @@ export default function Home() {
             ) : (
                 <>
                     <Products>
-                        {products.map(({ url, name, price, idFranchise, _id }) => {
+                        {products.map(({ url, name, price, idFranchise, _id, franchises }) => {
                             return (
                                 <ContainerProducts key={name} onClick={() => navigate(`/product/${_id}`)}>
                                     <img src={url} alt="Imagem do produto"></img>
-                                    <p>{name}</p>
-                                    <div className="container">
-                                        <img src={franchises[0].logo} alt="Imagem da franquia" className="franchiseLogo" />
-                                        <p className="franchise">{franchises[0].name}</p>
-                                        <p className="price">R$ {price.$numberDecimal}</p>
+                                    <div className="info">
+                                        <p className="product-name">{name}</p>
+                                        <div className="container">
+                                            <div>
+                                                <img src={franchises[0].logo} alt="Imagem da franquia" className="franchiseLogo" />
+                                                <p className="franchise">{franchises[0].name}</p>
+                                            </div>
+                                            <p className="price">R$ {price.$numberDecimal}</p>
+                                        </div>
                                     </div>
                                 </ContainerProducts>
                             )
@@ -127,8 +131,14 @@ export default function Home() {
 
 const Header = styled.header`
     width: 100vw;   
-    height:170px;
+    height: 170px;
     background:#2D7AEF;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 1;
 
     .icon {
         width: 24px;
@@ -147,13 +157,20 @@ const Header = styled.header`
 `
 
 const Footer = styled.footer`
-    width: 375px;
+    /*width: 375px;*/
+    width: 100vw;
     height: 67px;
     border: 1px solid #ffffff;
     background:#2D7AEF;
     display: flex;
     justify-content: space-around;
-`
+
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    z-index: 1;
+`;
 
 
 const Container = styled.div`
@@ -180,30 +197,55 @@ const Menu = styled.div`
     }
 `
 
-const Products = styled.body`
-    max-width: 375px;  
-    background:#ffffff;
+const Products = styled.main`
+    height: 100vh - 170px - 67px;
+    width: 100vw;
+    margin-top: 170px;
+    margin-bottom: 72px;
+    /*max-width: 375px;*/  
+    background:#F6F9FF;
     display: flex;
     flex-wrap:wrap;
-    justify-content: center;
-    column-gap: 20px;
+    justify-content: space-evenly;
+    /*justify-content: center;
+    column-gap: 20px;*/
 `
 
 const ContainerProducts = styled.div`
     border: 1px solid #E5E5E5;
-    border-radius: 10%;
-    width: 130px;
+    border-radius: 10px;
+    /*width: 150px;*/
+    width: fit-content;
     height: fit-content;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+
+    padding-bottom: 10px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+    background-color: #FFFFFF;
+   
+    align-items: center;
 
     img {
         display:flex;
-        height:128px;
-        width: 130px;
-        border-radius: 10%;
+        height:150px;
+        width: 150px;
+        border-radius: 10px 10px 0px 0px;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #000;
+        /*border-radius: 10%;*/
+        
+    }
+
+    .info{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        height: 115px;
+        justify-content: space-between;
     }
 
     p {
@@ -211,6 +253,17 @@ const ContainerProducts = styled.div`
         color: #4A4A4A;
         font-size: 15px;
         text-align: center;
+        width: 140px;
+       
+    }
+
+    .product-name{
+        height: min-content;
+        text-align: center;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .price {
@@ -222,18 +275,36 @@ const ContainerProducts = styled.div`
 
     .container {
         display: flex;
-        justify-content: space-evenly;
+        flex-direction: column;
+        justify-content: center;
+        /*justify-content: space-evenly;*/
         text-align: center;
+        width: 150px;
+
+        margin-top: 5px;
     }
 
     .franchise {
         color: #4F4F4F;
-        font-size: 12px;
+        font-size: 16px;
+        width: fit-content;
+        margin: 0;
+        margin-left: 10px;
+
+        text-align: center;
     }
 
     .franchiseLogo{
         width:25px;
         height:25px;
+        border: none;
+        border-radius: 50%;
+    }
+
+    div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 `
 

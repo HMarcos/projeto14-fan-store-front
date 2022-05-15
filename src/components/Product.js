@@ -125,7 +125,7 @@ export default function Product() {
     )
 }
 
-const Loading = styled.body`
+const Loading = styled.div`
     height:100vh;
     display: flex;
     flex-direction: column;
