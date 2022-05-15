@@ -126,7 +126,7 @@ export default function Home() {
 };
 
 const Header = styled.header`
-    width: 375px;   
+    width: 100vw;   
     height:170px;
     background:#2D7AEF;
 
@@ -192,8 +192,8 @@ const Products = styled.body`
 const ContainerProducts = styled.div`
     border: 1px solid #E5E5E5;
     border-radius: 10%;
-    width: 160px;
-    height: fix-content;
+    width: 130px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -202,7 +202,7 @@ const ContainerProducts = styled.div`
     img {
         display:flex;
         height:128px;
-        width: 160px;
+        width: 130px;
         border-radius: 10%;
     }
 
