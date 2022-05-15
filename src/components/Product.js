@@ -15,7 +15,7 @@ export default function Product() {
     const { productId } = useParams();
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState([]);
-    const [size, setSize] = useState("");
+    const [size, setSize] = useState("unique");
     const [qty, setQty] = useState("");
     /*const [cart, setCart] = useState({ _id: "", products: {d do Produto, Quantidade}];
         * status (aberto, fechado);
@@ -45,19 +45,53 @@ export default function Product() {
     }
 
     function goToCart() {
-        if (!user.token) {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+
+        const product = {
+            productId,
+            qty,
+            type: size.slice(0,1).toUpperCase()
+        }
+
+        console.log(product);
+
+        const promise = axios.put(`${API_LINK}/cart`, product, config);
+
+        /*if (!user.token) {
             alert('Você precisa estar logado!');
             navigate('/sign-in');
             return;
-        }
-        /*setLoading(true)
+        }*/
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
-        
+        promise.then((response) => {
+            alert("Produto adicionado ao carrinho com sucesso!");
+            navigate('/cart');
+        })
+
+        promise.catch((error) => {
+            const { status, data } = error.response;
+
+            if (Number(status) !== 500) {
+                alert(`Não foi possível adicionar o produto ao carrinho.
+            Usuário precisa estar logado no sistema. 
+            Erro ${status}: ${data} `);
+                navigate('/sign-in');
+                return;
+            }
+
+            else {
+                alert(`Não foi possível adicionar o produto ao carrinho.
+            Erro ${status}: ${data} `);
+
+            }
+        })
+
+        /*setLoading(true)
+       
         const promise = axios.post(`${API_LINK}/cart`, cart, config);
         promise.then((res) => {
             setLoading(false)
