@@ -63,7 +63,7 @@ export default function Home() {
                 <Container>
                     <img src={logo} alt="logo" />
                     <img src={userIcon} alt="user-icon" onClick={() => navigate("/user")} className="icon" />
-                    <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/chart")} className="icon" />
+                    <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/cart")} className="icon" />
                 </Container>
                 <Menu>
                     {categories.map(({ name }) =>
@@ -220,6 +220,8 @@ const ContainerProducts = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 20px;
+
+    cursor: pointer;
 
     padding-bottom: 10px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));

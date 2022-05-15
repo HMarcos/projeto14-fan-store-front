@@ -17,7 +17,7 @@ export default function Product() {
     const [product, setProduct] = useState([]);
     const [size, setSize] = useState("");
     const [qty, setQty] = useState("");
-    /*const [chart, setChart] = useState({ _id: "", products: {d do Produto, Quantidade}];
+    /*const [cart, setCart] = useState({ _id: "", products: {d do Produto, Quantidade}];
         * status (aberto, fechado);
         * Valor total;})*/
     const { user } = useContext(UserContext);
@@ -44,7 +44,7 @@ export default function Product() {
         return qty;
     }
 
-    function goToChart() {
+    function goToCart() {
         if (!user.token) {
             alert('Você precisa estar logado!');
             navigate('/sign-in');
@@ -58,10 +58,10 @@ export default function Product() {
             },
         };
         
-        const promise = axios.post(`${API_LINK}/chart`, chart, config);
+        const promise = axios.post(`${API_LINK}/cart`, cart, config);
         promise.then((res) => {
             setLoading(false)
-            navigate('/chart');
+            navigate('/cart');
         })
         promise.catch(() => {
             alert('Não foi possível adicionar o produto no carrinho.')
@@ -115,7 +115,7 @@ export default function Product() {
                             )}
 
                         </Selection>
-                        <Footer onClick={(() => goToChart())}>
+                        <Footer onClick={(() => goToCart())}>
                             <button>Adicionar ao carrinho</button>
                         </Footer>
                     </>
