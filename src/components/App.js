@@ -11,6 +11,7 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Address from "./Address";
 import InfoLogin from "./InfoLogin";
+import CheckOut from "./CheckOut"
 
 import RegisterContext from "../contexts/RegisterContext";
 import UserContext from "../contexts/UserContext";
@@ -40,6 +41,7 @@ function App() {
                             <Route path="/sign-up/address" element={<Address />} />
                             <Route path="/product/:productId" element={< Product />} />
                             <Route path="/info-login/:infoId" element={<InfoLogin />} />
+                            <Route path="/check-out" element={<CheckOut />} />
                         </Routes>
                     </BrowserRouter>
                 </RegisterContext.Provider>
