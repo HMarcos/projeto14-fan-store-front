@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Oval } from "react-loader-spinner";
-import dayjs from "dayjs";
 
 import UserContext from "../contexts/UserContext";
 
@@ -66,7 +65,7 @@ export default function CheckOut() {
         const promise = axios.post(`${API_LINK}/paymentinfo`, body, config);
         promise.then((res) => {
             setLoading(false);
-            alert('Compra finalizada!')
+            navigate('/successful-payment')
         });
 
         promise.catch((error) => {

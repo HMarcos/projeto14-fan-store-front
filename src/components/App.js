@@ -44,7 +44,7 @@ function App() {
                             <Route path="/product/:productId" element={< Product />} />
                             <Route path="/info-login/:infoId" element={<InfoLogin />} />
                             <Route path="/check-out" element={<CheckOut />} />
-                            <Route path="successful-payment" element={ <SuccessfulPayment />}/>
+                            <Route path="/successful-payment" element={ <SuccessfulPayment />}/>
                         </Routes>
                     </BrowserRouter>
                 </RegisterContext.Provider>
