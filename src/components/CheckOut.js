@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Oval } from "react-loader-spinner";
+import dayjs from "dayjs";
 
 import UserContext from "../contexts/UserContext";
 
@@ -17,18 +18,6 @@ export default function CheckOut() {
     const [loading, setLoading] = useState(true);
 
     useEffect(renderCart, []);
-
-    /*const adress = {
-        address: {
-            cep: "12237-821",
-            street: "Rua José Cobra",
-            number: "12",
-            district: "Jd Oriente",
-            city: "São José dos Campos",
-            state: "São Paulo",
-            country: "Brasil"
-        }
-    }*/
 
     function renderCart() {
 
@@ -61,59 +50,86 @@ export default function CheckOut() {
         })
     }
 
-    return (
-        loading ? (
-            <>
-                <Loading>
-                    <p>Carregando...</p>
-                    <Oval color="#FFFFFF" height={80} width={80} />
-                </Loading>
-            </>
-        ) : (
-            <>
-                <Header>
-                    <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/cart'))}></img>
-                    <p>Pagamento</p>
-                </Header>
-                <Content>
-                    <p>Selecione a forma de pagamento:</p>
-                    <select>
-                        <option onClick={(() => setPayment('credit'))}>Cartão de crédito</option>
-                        <option onClick={(() => setPayment('debit'))}>Cartão de débito</option>
-                        <option onClick={(() => setPayment('pix'))}>PIX</option>
-                        <option onClick={(() => setPayment('ticket'))}>Boleto</option>
-                    </select>
-                    <p>Informações de entrega:</p>
-                    <p className="adress">{cart.userAddress.street}, {cart.userAddress.number} </p>
-                    <p className="adress">{cart.userAddress.city}, {cart.userAddress.state} </p>
-                </Content>
-                <InfoPrice>
-                    <h1>Detalhes da compra</h1>
-                    {cart.products.map((product) => {
-                        return (
-                            <>
-                                <Details>
-                                    <p className="name">{product.name}</p>
-                                    <p className="price">R$ {(parseFloat(product.price.$numberDecimal) * parseInt(product.qty)).toFixed(2).replace(".", ",")}</p>
-                                </Details>
-                            </>
-                        )
-                    }
-                    )}
-                    <Details>
-                        <h1>Valor total</h1>
-                        <h1>R$ {parseFloat(cart.totalValue).toFixed(2).replace(".", ",")}</h1>
-                    </Details>
-                </InfoPrice>
-                <Footer>
-                    <button>Finalizar compra</button>
-                </Footer>
-            </>
-        )
-    )
-}
+    function finishPayment() {
 
-const Loading = styled.div`
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+
+        const body = {
+            paymentType: payment,
+        }
+        console.log(body);
+
+        const promise = axios.post(`${API_LINK}/paymentinfo`, body, config);
+        promise.then((res) => {
+            setLoading(false);
+            alert('Compra finalizada!')
+        });
+
+        promise.catch((error) => {
+            const { status, data } = error.response;
+            alert(`Não foi possível finalizar o pagamento.
+            Erro ${status}: ${data} `);
+            setLoading(false);
+        })
+    }
+
+    return (
+            loading ? (
+                <>
+                    <Loading>
+                        <p>Carregando...</p>
+                        <Oval color="#FFFFFF" height={80} width={80} />
+                    </Loading>
+                </>
+            ) : (
+                <>
+                    <Header>
+                        <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/cart'))}></img>
+                        <p>Pagamento</p>
+                    </Header>
+                    <Content>
+                        <p>Selecione a forma de pagamento:</p>
+                        <select onChange={(e) => setPayment(e.target.value)}>
+                            <option>Cartão de crédito</option>
+                            <option>Cartão de débito</option>
+                            <option>PIX</option>
+                            <option>Boleto</option>
+                        </select>
+                        <p>Informações de entrega:</p>
+                        <p className="adress">{cart.userAddress.street}, {cart.userAddress.number} </p>
+                        <p className="adress">{cart.userAddress.city}, {cart.userAddress.state} </p>
+                    </Content>
+                    <InfoPrice>
+                        <h1>Detalhes da compra</h1>
+                        {cart.products.map((product) => {
+                            return (
+                                <>
+                                    <Details>
+                                        <p className="name">{product.name}</p>
+                                        <p className="price">R$ {(parseFloat(product.price.$numberDecimal) * parseInt(product.qty)).toFixed(2).replace(".", ",")}</p>
+                                    </Details>
+                                </>
+                            )
+                        }
+                        )}
+                        <Details>
+                            <h1>Valor total</h1>
+                            <h1>R$ {parseFloat(cart.totalValue).toFixed(2).replace(".", ",")}</h1>
+                        </Details>
+                    </InfoPrice>
+                    <Footer>
+                        <button onClick={(() => finishPayment())}>Finalizar compra</button>
+                    </Footer>
+                </>
+            )
+        )
+    }
+
+    const Loading = styled.div`
     height:100vh;
     display: flex;
     flex-direction: column;
@@ -124,7 +140,7 @@ p {
     }
 `;
 
-const Header = styled.header`
+    const Header = styled.header`
     width: 100vw;   
     height: 70px;
     background:#2D7AEF;
@@ -154,7 +170,7 @@ const Header = styled.header`
     }
 `
 
-const Content = styled.div`
+    const Content = styled.div`
     margin-top: 90px;
     p {
         font-weight: 700;
@@ -193,7 +209,7 @@ const Content = styled.div`
     }
 `
 
-const InfoPrice = styled.div`
+    const InfoPrice = styled.div`
 margin-top: 30px;
     height: fit-content;
     width: 345px;
@@ -242,13 +258,13 @@ margin-top: 30px;
    }
 `;
 
-const Details = styled.div`
+    const Details = styled.div`
     width: 345px;
     display: flex;
     justify-content: space-between;
 `;
 
-const Footer = styled.footer`
+    const Footer = styled.footer`
     height: fit-content;
     width: 100vw;
     display: flex;
