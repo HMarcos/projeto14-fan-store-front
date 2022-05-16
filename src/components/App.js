@@ -10,12 +10,12 @@ import Product from "./Product"
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Address from "./Address";
+import InfoLogin from "./InfoLogin";
 
 import RegisterContext from "../contexts/RegisterContext";
 import UserContext from "../contexts/UserContext";
 
 import { registerStructure, userStructure } from "../data/stateStructures";
-import InfoLogin from "./InfoLogin";
 
 
 function App() {
