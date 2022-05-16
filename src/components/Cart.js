@@ -103,8 +103,8 @@ export default function Cart() {
                 }
                 )}
                 <Details>
-                <h1>Valor total</h1>
-                <h1>R$ {cart[0].totalValue}</h1>
+                    <h1>Valor total</h1>
+                    <h1>R$ {cart[0].totalValue}</h1>
                 </Details>
                 <button>Pagamento</button>
             </Footer>
@@ -141,8 +141,8 @@ const Header = styled.header`
         top: 28px;  
         left: 15px;
         :hover{
-                cursor: pointer;
-                filter: brightness(0.9);
+            cursor: pointer;
+            filter: brightness(0.9);
         }
     }
 `
@@ -155,7 +155,7 @@ const Footer = styled.footer`
     justify-content: center;
     align-items: center;
     background: #FFFFFF;
-    
+
     button {
         width: 311px;
         height: 48px;
@@ -242,4 +242,5 @@ const Content = styled.div`
 
 const Details = styled.div`
     display: flex;
+    justify-content: space-between;
 `
