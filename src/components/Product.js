@@ -253,7 +253,7 @@ const Selection = styled.div`
 
     p {
         border: 1px solid #2D7AEF;
-        border-radius: 80%;
+        border-radius: 40%;
         column-gap: 10px;
         margin-right: 10px;
     }
