@@ -54,8 +54,6 @@ export default function Product() {
             type: size === "unique" ? size : size.slice(0,1).toUpperCase() 
         }
 
-        console.log(product);
-
         const promise = axios.put(`${API_LINK}/cart`, product, config);
 
         promise.then((response) => {

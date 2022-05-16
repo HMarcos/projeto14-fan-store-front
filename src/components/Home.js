@@ -55,8 +55,6 @@ export default function Home() {
         })
     }, []);
 
-    console.log(products)
-
     return (
         <>
             <Header>
