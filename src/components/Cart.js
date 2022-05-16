@@ -18,36 +18,6 @@ export default function Cart() {
 
     console.log(cart);
 
-    /*const cart = {
-        userId: "627df3e2ccb008e40e3b0c44",
-        status: "opened",
-        products: [{
-            productId: "627c25764fe14e657acaa975",
-            qty: 1,
-            type: "P",
-            name: "Camiseta Spider Man super maneira com silk etc e tal",
-            price: 50,
-            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
-        },
-        {
-            productId: "627c25764fe14e657acaa975",
-            qty: 1,
-            type: "P",
-            name: "Camiseta Spider Man",
-            price: 50,
-            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
-        },
-        {
-            productId: "627c25764fe14e657acaa975",
-            qty: 1,
-            type: "P",
-            name: "Camiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider Man",
-            price: 50,
-            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
-        }],
-        totalValue: 0
-    }*/
-
     useEffect(renderCart, []);
 
     function renderCart() {
@@ -64,10 +34,21 @@ export default function Cart() {
             setLoading(false);
         });
 
-        promise.catch(() => {
-            alert('Não foi possível carregar o carrinho.')
-            setLoading(false)
-        });
+        promise.catch((error) => {
+            const { status, data } = error.response;
+
+            if (Number(status) !== 500 && Number(status) !== 422) {
+                navigate('/info-login/1');
+                return;
+            }
+
+            else {
+                alert(`Não foi possível adicionar o produto ao carrinho.
+            Erro ${status}: ${data} `);
+
+            }
+            setLoading(false);
+        })
     }
 
     function deleteProduct(idProduct) {
@@ -110,8 +91,8 @@ export default function Cart() {
                                 <Product>
                                     <img src={product.url} alt="Imagem do produto" />
                                     <Container>
-                                        <p>{product.name}</p>
-                                        <h1>R$ {product.price.$numberDecimal.replace(".", ",")}</h1>
+                                        <p className="name">{product.name}</p>
+                                        <h1>R$ {(product.price.$numberDecimal).replace(".", ",")}</h1>
                                         <p>Quantidade: {product.qty}</p>
                                         <h2 onClick={(() => deleteProduct(product.productId))}>Remover</h2>
                                     </Container>
@@ -120,24 +101,28 @@ export default function Cart() {
                         )
                     }
                     )}
+                    <InfoPrice>
+                        <h1>Detalhes</h1>
+                        {cart.products.map((product) => {
+                            return (
+                                <>
+                                    <Details>
+                                        <p className="name">{product.name}</p>
+                                        <p className="price">R$ {(parseFloat(product.price.$numberDecimal) * parseInt(product.qty)).toFixed(2).replace(".", ",")}</p>
+                                    </Details>
+                                </>
+                            )
+                        }
+                        )}
+                        <Details>
+                            <h1>Valor total</h1>
+                            <h1>R$ {parseFloat(cart.totalValue).toFixed(2).replace(".", ",")}</h1>
+                        </Details>
+                    </InfoPrice>
                 </Content>
+
                 <Footer>
-                    <h1>Detalhes</h1>
-                    {cart.products.map((product) => {
-                        return (
-                            <>
-                                <Details>
-                                    <p className="name">{product.name}</p>
-                                    <p className="price">R$ {product.price.$numberDecimal.replace(".", ",")}</p>
-                                </Details>
-                            </>
-                        )
-                    }
-                    )}
-                    <Details>
-                        <h1>Valor total</h1>
-                        <h1>R$ {cart.totalValue}</h1>
-                    </Details>
+
                     <button>Pagamento</button>
                 </Footer>
             </>
@@ -189,28 +174,19 @@ const Header = styled.header`
             filter: brightness(0.9);
         }
     }
-`
+`;
 
-const Footer = styled.footer`
+const InfoPrice = styled.div`
     height: fit-content;
-    width: 100vw;
+    width: 345px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #FFFFFF;
+    background-color: #FFFFFF;
 
-    button {
-        width: 311px;
-        height: 48px;
-        background: #2D7AEF;
-        border-radius: 24px;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 18px;
-        color: #FFFFFF;
-        margin-bottom: 5px;
-    }
+    box-shadow: 0px 21px 43px rgba(58, 76, 130, 0.0722656);
+
 
    h1 {
     padding: 10px;
@@ -233,34 +209,71 @@ const Footer = styled.footer`
     color: #000000;
 
    }
-
+   
    .name {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    width: 80%;
+    width: 70%;
    }
 
    .price {
-    width: 20%;
+    min-width: 25%;
+    width: fit-content;
    }
-`
+`;
+
+const Footer = styled.footer`
+    height: fit-content;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+
+    position: fixed;
+    
+    bottom: 0;
+    left: 0;
+
+    z-index: 1;
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    button {
+        width: 311px;
+        height: 48px;
+        background: #2D7AEF;
+        border-radius: 24px;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 18px;
+        color: #FFFFFF;
+        margin-bottom: 5px;
+    }
+`;
 
 const Product = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 21px 43px rgba(58, 76, 130, 0.0722656);
     height: fit-content;
     padding: 10px;
-    width: 100vw;   
+    width: 345px;   
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
+
+    margin-bottom: 10px;
 
     img {
         border-radius: 10px;
         width: 102px;
         height: 102px;
+
+        margin-right: 10px;
     }
 
     p {
@@ -270,6 +283,8 @@ const Product = styled.div`
         color: #4F4F4F;
         margin-top: 5px;
         margin-bottom: 5px;
+
+        
     }
 
     h1 {
@@ -289,12 +304,12 @@ const Product = styled.div`
 
     .name {
         display: -webkit-box;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        width: 40%;
+        width: fit-content;
     }
-    `
+`;
 
 const Container = styled.div`
     display: flex;
@@ -302,12 +317,13 @@ const Container = styled.div`
 `
 const Content = styled.div`
     margin-top: 80px;
+    margin-bottom: 100px;
     display: flex;
     flex-direction: column;
 `
 
 const Details = styled.div`
-    width: 90vw;
+    width: 345px;
     display: flex;
     justify-content: space-between;
-`
+`;
