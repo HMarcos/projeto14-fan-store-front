@@ -16,8 +16,10 @@ export default function Product() {
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState([]);
     const [size, setSize] = useState("unique");
-    const [qty, setQty] = useState("");
+    const [qty, setQty] = useState(0);
     const { user } = useContext(UserContext);
+
+    let soldout = false;
 
     useEffect(() => {
         const promise = axios.get(`${API_LINK}/product/${productId}`);
@@ -99,37 +101,41 @@ export default function Product() {
                             <h1>{product.name}</h1>
                             <h2>R$ {product.price.$numberDecimal.replace(".", ",")}</h2>
                             <p>{product.description}</p>
+                            
                             <Selection>
                                 {product.idCategory === 1 ? (
                                     <>
-                                        <p onClick={(() => setSize('pQty'))}>P</p>
-                                        <p onClick={(() => setSize('mQty'))}>M</p>
-                                        <p onClick={(() => setSize('gQty'))}>G</p>
-                                        <select onChange={(e) => setQty(e.target.value)}>
+                                        <p className={size === "pQty"? "selected": ""} onClick={(() => setSize('pQty'))}>P</p>
+                                        <p className={size === "mQty"? "selected": ""} onClick={(() => setSize('mQty'))}>M</p>
+                                        <p className={size === "gQty"? "selected": ""} onClick={(() => setSize('gQty'))}>G</p>
+                                        <select onChange={(e) => setQty(Number(e.target.value))}>
                                             {mappingProductQty(product[size]).map((qty) =>
                                                 <option>
                                                     {qty}
                                                 </option>
                                             )}
                                         </select>
+                                        {soldout = product[size] === 0 ? true : false}
                                     </>
                                 ) : (
                                     <>
-                                        <h1>Tamanho único:</h1>
-                                        <select onChange={(e) => setQty(e.target.value)}>
+                                        <h1>Quantidade:</h1>
+                                        <select onChange={(e) => setQty(Number(e.target.value))}>
                                             {mappingProductQty(product.uniqueQty).map((qty) =>
                                                 <option>
                                                     {qty}
                                                 </option>
                                             )}
                                         </select>
+                                        {soldout = product.uniqueQty === 0 ? true : false}
                                     </>
                                 )}
 
                             </Selection>
+                            <span className="soldout">{soldout ? "ESGOTADO!": ""}</span>
                         </main>
                         <Footer onClick={(() => goToCart())}>
-                            <button>Adicionar ao carrinho</button>
+                            <button disabled={qty === 0 ? true : false}>Adicionar ao carrinho</button>
                         </Footer>
                     </>
                 </Content>
@@ -200,11 +206,24 @@ const Content = styled.div`
         color: #FFFFFF;
     }
 
+    button:disabled {
+        background: #4F4F4F;
+    }
+
     .icon {
         width: 24px;
         height: 24px;
         opacity: 0.6;
         position:absolute;
+    }
+
+    .soldout{
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+
+        color: #7d2727;
+        margin-left: 16px;
     }
 
 `;
@@ -229,12 +248,20 @@ const Footer = styled.footer`
 const Selection = styled.div`
     display:flex;
     margin-top: 15px;
+    margin-bottom: 10px;
+    align-items: center;
 
     p {
         border: 1px solid #2D7AEF;
         border-radius: 80%;
         column-gap: 10px;
         margin-right: 10px;
+    }
+
+    .selected{
+        color: #FFFFFF;
+        background-color: #2D7AEF;
+        border: 1px solid #000000;
     }
 
     select {
@@ -251,6 +278,9 @@ const Selection = styled.div`
         text-align: center;
         display: flex;
         align-items: center;
+
+        border: 1px solid #4F4F4F;
+        border-radius: 10px;
 
     }
 `;
