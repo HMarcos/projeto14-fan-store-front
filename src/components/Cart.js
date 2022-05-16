@@ -129,7 +129,7 @@ export default function Cart() {
 
                 <Footer>
 
-                    <button>Pagamento</button>
+                    <button onClick={(() => navigate('/check-out'))}>Pagamento</button>
                 </Footer>
             </>
         )
