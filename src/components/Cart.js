@@ -38,30 +38,6 @@ export default function Cart() {
             productId: "627c25764fe14e657acaa975",
             qty: 1,
             type: "P",
-            name: "Camiseta Spider Man",
-            price: 50,
-            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
-        },
-        {
-            productId: "627c25764fe14e657acaa975",
-            qty: 1,
-            type: "P",
-            name: "Camiseta Spider Man",
-            price: 50,
-            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
-        },
-        {
-            productId: "627c25764fe14e657acaa975",
-            qty: 1,
-            type: "P",
-            name: "Camiseta Spider Man",
-            price: 50,
-            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
-        },
-        {
-            productId: "627c25764fe14e657acaa975",
-            qty: 1,
-            type: "P",
             name: "Camiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider Man",
             price: 50,
             url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
@@ -94,41 +70,7 @@ export default function Cart() {
                 <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
                 <p>Carrinho</p>
             </Header>
-            <Content>
-                {cart[0].products.map((product) => {
-                    return (
-                        <Product>
-                            <img src={cart[0].products[0].url} alt="Imagem do produto" />
-                            <Container>
-                                <p>{product.name}</p>
-                                <h1>R$ {product.price}</h1>
-                                <p>Quantidade: {product.qty}</p>
-                                <h2>Remover</h2>
-                            </Container>
-                        </Product>
-                    )
-                }
-                )}
-            </Content>
-            <Footer>
-                <h1>Detalhes</h1>
-                {cart[0].products.map((product) => {
-                    return (
-                        <>
-                            <Details>
-                                <p className="name">{product.name}</p>
-                                <p className="price">R$ {product.price}</p>
-                            </Details>
-                        </>
-                    )
-                }
-                )}
-                <Details>
-                    <h1>Valor total</h1>
-                    <h1>R$ {cart[0].totalValue}</h1>
-                </Details>
-                <button>Pagamento</button>
-            </Footer>
+            
         </>
     )
 }
@@ -288,3 +230,38 @@ const Details = styled.div`
     display: flex;
     justify-content: space-between;
 `
+/*<Content>
+                {cart[0].products.map((product) => {
+                    return (
+                        <Product>
+                            <img src={cart[0].products[0].url} alt="Imagem do produto" />
+                            <Container>
+                                <p>{product.name}</p>
+                                <h1>R$ {product.price}</h1>
+                                <p>Quantidade: {product.qty}</p>
+                                <h2>Remover</h2>
+                            </Container>
+                        </Product>
+                    )
+                }
+                )}
+            </Content>
+            <Footer>
+                <h1>Detalhes</h1>
+                {cart[0].products.map((product) => {
+                    return (
+                        <>
+                            <Details>
+                                <p className="name">{product.name}</p>
+                                <p className="price">R$ {product.price}</p>
+                            </Details>
+                        </>
+                    )
+                }
+                )}
+                <Details>
+                    <h1>Valor total</h1>
+                    <h1>R$ {cart[0].totalValue}</h1>
+                </Details>
+                <button>Pagamento</button>
+            </Footer>*/
