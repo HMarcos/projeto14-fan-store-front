@@ -12,15 +12,17 @@ import returnIcon from "../assets/iconreturnwhite.png"
 export default function Cart() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    const [cart, setCart] = useState([]);
+    console.log(cart);
 
-    const cart = [{
+    /*const cart = [{
         userId: "627df3e2ccb008e40e3b0c44",
         status: "opened",
         products: [{
             productId: "627c25764fe14e657acaa975",
             qty: 1,
             type: "P",
-            name: "Camiseta Spider Man",
+            name: "Camiseta Spider Man super maneira com silk etc e tal",
             price: 50,
             url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
         },
@@ -60,12 +62,31 @@ export default function Cart() {
             productId: "627c25764fe14e657acaa975",
             qty: 1,
             type: "P",
-            name: "Camiseta Spider Man",
+            name: "Camiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider ManCamiseta Spider Man",
             price: 50,
             url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
         }],
         totalValue: 0
-    }]
+    }]*/
+
+    useEffect(renderCart, []);
+
+    function renderCart() {
+        if (cart.length === 0) {
+            alert("O carrinho está vazio!");
+            navigate('/');
+        }
+        const promise = axios.get(`${API_LINK}/cart`);
+        promise.then((res) => {
+            setLoading(false)
+            setCart(res.data);
+            console.log(cart);
+        })
+        promise.catch(() => {
+            alert('Não foi possível carregar o carrinho.')
+            setLoading(false)
+        })
+    }
 
     return (
         <>
@@ -95,8 +116,8 @@ export default function Cart() {
                     return (
                         <>
                             <Details>
-                                <p>{product.name}</p>
-                                <p>R$ {product.price}</p>
+                                <p className="name">{product.name}</p>
+                                <p className="price">R$ {product.price}</p>
                             </Details>
                         </>
                     )
@@ -187,13 +208,27 @@ const Footer = styled.footer`
     line-height: 20px;
     letter-spacing: -0.165px;
     color: #000000;
+
+   }
+
+   .name {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 80%;
+   }
+
+   .price {
+    width: 20%;
    }
 `
 
 const Product = styled.div`
     background: #FFFFFF;
     box-shadow: 0px 21px 43px rgba(58, 76, 130, 0.0722656);
-    height: 140px;
+    height: fit-content;
+    padding: 10px;
     width: 100vw;   
     display: flex;
     align-items: center;
@@ -228,6 +263,14 @@ const Product = styled.div`
         color: #4F4F4F;
         opacity: 0.5;
     }
+
+    .name {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        width: 40%;
+    }
     `
 
 const Container = styled.div`
@@ -241,6 +284,7 @@ const Content = styled.div`
 `
 
 const Details = styled.div`
+    width: 90vw;
     display: flex;
     justify-content: space-between;
 `
