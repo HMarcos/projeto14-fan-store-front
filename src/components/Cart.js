@@ -19,7 +19,50 @@ export default function Cart() {
         products: [{
             productId: "627c25764fe14e657acaa975",
             qty: 1,
-            type: "P"
+            type: "P",
+            name: "Camiseta Spider Man",
+            price: 50,
+            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
+        },
+        {
+            productId: "627c25764fe14e657acaa975",
+            qty: 1,
+            type: "P",
+            name: "Camiseta Spider Man",
+            price: 50,
+            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
+        },
+        {
+            productId: "627c25764fe14e657acaa975",
+            qty: 1,
+            type: "P",
+            name: "Camiseta Spider Man",
+            price: 50,
+            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
+        },
+        {
+            productId: "627c25764fe14e657acaa975",
+            qty: 1,
+            type: "P",
+            name: "Camiseta Spider Man",
+            price: 50,
+            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
+        },
+        {
+            productId: "627c25764fe14e657acaa975",
+            qty: 1,
+            type: "P",
+            name: "Camiseta Spider Man",
+            price: 50,
+            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
+        },
+        {
+            productId: "627c25764fe14e657acaa975",
+            qty: 1,
+            type: "P",
+            name: "Camiseta Spider Man",
+            price: 50,
+            url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
         }],
         totalValue: 0
     }]
@@ -30,7 +73,39 @@ export default function Cart() {
                 <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
                 <p>Carrinho</p>
             </Header>
+            <Content>
+                {cart[0].products.map((product) => {
+                    return (
+                        <Product>
+                            <img src={cart[0].products[0].url} alt="Imagem do produto" />
+                            <Container>
+                                <p>{product.name}</p>
+                                <h1>R$ {product.price}</h1>
+                                <p>Quantidade: {product.qty}</p>
+                                <h2>Remover</h2>
+                            </Container>
+                        </Product>
+                    )
+                }
+                )}
+            </Content>
             <Footer>
+                <h1>Detalhes</h1>
+                {cart[0].products.map((product) => {
+                    return (
+                        <>
+                            <Details>
+                                <p>{product.name}</p>
+                                <p>R$ {product.price}</p>
+                            </Details>
+                        </>
+                    )
+                }
+                )}
+                <Details>
+                <h1>Valor total</h1>
+                <h1>R$ {cart[0].totalValue}</h1>
+                </Details>
                 <button>Pagamento</button>
             </Footer>
         </>
@@ -73,11 +148,14 @@ const Header = styled.header`
 `
 
 const Footer = styled.footer`
+    height: fit-content;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    background: #FFFFFF;
+    
     button {
         width: 311px;
         height: 48px;
@@ -87,11 +165,81 @@ const Footer = styled.footer`
         font-size: 18px;
         line-height: 18px;
         color: #FFFFFF;
+        margin-bottom: 5px;
     }
 
-    position: fixed;
-    bottom: 10px;
-    left: 0;
+   h1 {
+    padding: 10px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 20px;
 
-    z-index: 1;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.165px;
+
+    color: #000000;
+   }
+
+   p { 
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.165px;
+    color: #000000;
+   }
+`
+
+const Product = styled.div`
+    background: #FFFFFF;
+    box-shadow: 0px 21px 43px rgba(58, 76, 130, 0.0722656);
+    height: 140px;
+    width: 100vw;   
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    img {
+        border-radius: 10px;
+        width: 102px;
+        height: 102px;
+    }
+
+    p {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        color: #4F4F4F;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    h1 {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 22px;
+        color: #2D7AEF;
+    }
+
+    h2 {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        color: #4F4F4F;
+        opacity: 0.5;
+    }
+    `
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+const Content = styled.div`
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+`
+
+const Details = styled.div`
+    display: flex;
 `
