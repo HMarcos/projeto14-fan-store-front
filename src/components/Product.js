@@ -66,11 +66,11 @@ export default function Product() {
         promise.catch((error) => {
             const { status, data } = error.response;
 
-            if (Number(status) !== 500) {
-                alert(`Não foi possível adicionar o produto ao carrinho.
+            if (Number(status) !== 500 && Number(status) !== 422) {
+                /*alert(`Não foi possível adicionar o produto ao carrinho.
             Usuário precisa estar logado no sistema. 
-            Erro ${status}: ${data} `);
-                navigate('/sign-in');
+            Erro ${status}: ${data} `);*/
+                navigate('/info-login/0');
                 return;
             }
 

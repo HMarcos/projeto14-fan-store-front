@@ -15,6 +15,7 @@ import RegisterContext from "../contexts/RegisterContext";
 import UserContext from "../contexts/UserContext";
 
 import { registerStructure, userStructure } from "../data/stateStructures";
+import InfoLogin from "./InfoLogin";
 
 
 function App() {
@@ -22,12 +23,12 @@ function App() {
     const [register, setRegister] = useState({ ...registerStructure });
 
     const [user, setUser] = useState({ ...userStructure });
-    
+
     return (
         <>
             <Reset />
             <GlobalStyle />
-            <UserContext.Provider value={{user, setUser}}>
+            <UserContext.Provider value={{ user, setUser }}>
                 <RegisterContext.Provider value={{ register, setRegister }}>
                     <BrowserRouter>
                         <Routes>
@@ -38,6 +39,7 @@ function App() {
                             <Route path="/sign-up" element={<SignUp />} />
                             <Route path="/sign-up/address" element={<Address />} />
                             <Route path="/product/:productId" element={< Product />} />
+                            <Route path="/info-login/:infoId" element={<InfoLogin />} />
                         </Routes>
                     </BrowserRouter>
                 </RegisterContext.Provider>
