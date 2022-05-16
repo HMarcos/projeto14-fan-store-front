@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Oval } from "react-loader-spinner";
@@ -85,6 +85,12 @@ export default function Cart() {
                     <p>Carrinho</p>
                 </Header>
                 <Content>
+                    <Overlay className={cart.products.length === 0? "display": "hide"}>
+                        <p>O seu carrinho está vazio! <br /> Aproveite a loja e compre os melhores produtos! </p>
+                        <Link to="/">
+                            <span>Voltar para a <strong>página principal</strong></span>
+                        </Link>
+                    </Overlay>
                     {cart.products.map((product) => {
                         return (
                             <>
@@ -175,6 +181,50 @@ const Header = styled.header`
         }
     }
 `;
+
+const Overlay = styled.div`
+    width: 100vw;
+    height: 100vh;
+
+    margin-top: 80px;
+    background-color: #FFFFFF;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: space-around;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 2;
+
+    p{
+        width: 300px;
+
+        font-size: 24px;
+        line-height: 30px;
+        font-weight: 500;
+
+        color:  #4F4F4F;
+
+        text-align: center;
+    }
+    
+    span{
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 22px;
+        color: #2D7AEF;
+        display: block;
+        strong {
+            font-weight: 700;
+        }
+    }
+
+`
 
 const InfoPrice = styled.div`
     height: fit-content;
@@ -320,6 +370,10 @@ const Content = styled.div`
     margin-bottom: 100px;
     display: flex;
     flex-direction: column;
+
+    .hide{
+        display: none;
+    }
 `
 
 const Details = styled.div`
