@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Oval } from "react-loader-spinner";
 
@@ -13,9 +13,12 @@ export default function Cart() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [cart, setCart] = useState([]);
+
+    const { user } = useContext(UserContext);
+
     console.log(cart);
 
-    /*const cart = [{
+    /*const cart = {
         userId: "627df3e2ccb008e40e3b0c44",
         status: "opened",
         products: [{
@@ -43,25 +46,33 @@ export default function Cart() {
             url: "https://m.media-amazon.com/images/I/41rmhM8oA-L._AC_.jpg"
         }],
         totalValue: 0
-    }]*/
+    }*/
 
     useEffect(renderCart, []);
 
     function renderCart() {
-        if (cart.length === 0) {
+        /*if (cart.length === 0) {
             alert("O carrinho está vazio!");
             navigate('/');
-        }
-        const promise = axios.get(`${API_LINK}/cart`);
+        }*/
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+
+        const promise = axios.get(`${API_LINK}/cart`, config);
         promise.then((res) => {
             setLoading(false)
             setCart(res.data);
             console.log(cart);
-        })
+        });
+
         promise.catch(() => {
             alert('Não foi possível carregar o carrinho.')
             setLoading(false)
-        })
+        });
     }
 
     return (
@@ -70,7 +81,7 @@ export default function Cart() {
                 <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
                 <p>Carrinho</p>
             </Header>
-            
+
         </>
     )
 }
