@@ -50,7 +50,9 @@ function SignIn() {
 
     return (
         <Content>
-            <Logo src={logo} alt="logo fan store" />
+            <Link to="/">
+                <Logo src={logo} alt="logo fan store" />
+            </Link>
             <WelcomeSpan>Seja bem vindo(a)!</WelcomeSpan>
             <LoginSpan> Faça seu login </LoginSpan>
             <LoginForm onSubmit={toLogin}>

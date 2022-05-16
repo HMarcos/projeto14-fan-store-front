@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import API_LINK from '../data/links';
 import { Oval } from "react-loader-spinner";
 
+import UserContext from "../contexts/UserContext";
+
 import logo from "../assets/logofanstore.png"
-import userIcon from "../assets/iconuser.png"
+import logoutIcon from "../assets/iconlogout.svg"
 import cartIcon from "../assets/iconcart.png"
 import homeIcon from "../assets/iconhome.png"
 import ordersIcon from "../assets/iconorder.png"
@@ -18,6 +20,8 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [franchises, setFranchises] = useState([]);
+
+    const { user, setUser } = useContext(UserContext);
 
     useEffect(() => {
         const promise = axios.get(`${API_LINK}/products`);
@@ -55,12 +59,42 @@ export default function Home() {
         })
     }, []);
 
+    function logout() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`
+            }
+        };
+
+        const promise = axios.put(`${API_LINK}/logout`, {}, config);
+
+        promise.then((response) => {
+            setUser({token: ""});
+            navigate("/sign-in");
+        });
+
+        promise.catch((error) => {
+            const { status, data } = error.response;
+
+            if (Number(status) !== 500 && Number(status) !== 422) {
+                navigate('/info-login/2');
+                return;
+            }
+
+            else {
+                alert(`Não foi possível deslogar o usuário!
+            Erro ${status}: ${data} `);
+
+            }
+        })
+    }
+
     return (
         <>
             <Header>
                 <Container>
                     <img src={logo} alt="logo" />
-                    <img src={userIcon} alt="user-icon" onClick={() => navigate("/user")} className="icon" />
+                    <img src={logoutIcon} onClick={logout} alt="logout-icon" className="icon" />
                     <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/cart")} className="icon" />
                 </Container>
                 <Menu>
@@ -112,12 +146,12 @@ export default function Home() {
                             <p>Início</p>
                         </Option>
                         <Option>
-                            <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
+                            <img src={ordersIcon} alt="order-icon" onClick={() => navigate("/")} />
                             <p>Histórico</p>
                         </Option>
                         <Option>
-                            <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
-                            <p>Usuário</p>
+                            <img src={logoutIcon} alt="logout-icon" onClick={logout} />
+                            <p>Logout</p>
                         </Option>
                     </Footer>
                 </>
@@ -147,6 +181,7 @@ const Header = styled.header`
         }
     }
 
+    
     img {
         width: 221px;
         height: 38px;

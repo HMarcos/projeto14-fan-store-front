@@ -6,9 +6,11 @@ import logo from "../assets/logofanstore-azul.png"
 export default function SuccessfulPayment() {
     return (
         <Content>
-            <Logo src={logo} alt="logo fan store" />
+            <Link to="/">
+                <Logo src={logo} alt="logo fan store" />
+            </Link>
 
-            <Info>Parabéns pela compra! <br/> O pagamento foi bem sucedido!</Info>
+            <Info>Parabéns pela compra! <br /> O pagamento foi bem sucedido!</Info>
 
             <Link to="/">
                 <LinkSpan>Para continuar comprando <strong>volte para a página principal!</strong></LinkSpan>

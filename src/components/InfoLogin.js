@@ -8,7 +8,7 @@ const infoMap = new Map();
 
 infoMap.set(0, "Para adicionar um produto ao carrinho é preciso fazer o login no sistema!");
 infoMap.set(1, "Para acessar o carrinho é preciso fazer o login no sistema!");
-infoMap.set(2, "Para acessar o perfil do usuário é preciso fazer o login no sistema!");
+infoMap.set(2, "Para deslogar o usuário é preciso fazer o login no sistema!");
 infoMap.set(3, "Para acessar o histórico de compras é preciso fazer o login no sistema!");
 
 
@@ -17,7 +17,9 @@ function InfoLogin() {
 
     return (
         <Content>
-            <Logo src={logo} alt="logo fan store" />
+            <Link to="/">
+                <Logo src={logo} alt="logo fan store" />
+            </Link>
 
             <Info>{infoMap.get(infoId)}</Info>
 
