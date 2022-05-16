@@ -5,7 +5,7 @@ import GlobalStyle from "./GlobalStyle";
 
 import Home from "./Home";
 import User from "./User"
-import Chart from "./Chart"
+import Cart from "./Cart"
 import Product from "./Product"
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -34,7 +34,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<Home />} />
                             <Route path="/user" element={<User />} />
-                            <Route path="/chart" element={<Chart />} />
+                            <Route path="/cart" element={<Cart />} />
                             <Route path="/sign-in" element={<SignIn />} />
                             <Route path="/sign-up" element={<SignUp />} />
                             <Route path="/sign-up/address" element={<Address />} />
