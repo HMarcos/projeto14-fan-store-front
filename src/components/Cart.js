@@ -51,10 +51,6 @@ export default function Cart() {
     useEffect(renderCart, []);
 
     function renderCart() {
-        /*if (cart.length === 0) {
-            alert("O carrinho está vazio!");
-            navigate('/');
-        }*/
 
         const config = {
             headers: {
@@ -76,15 +72,69 @@ export default function Cart() {
     }
 
     return (
+        loading ? (
+            <>
+                <Loading>
+                    <p>Carregando...</p>
+                    <Oval color="#FFFFFF" height={80} width={80} />
+                </Loading>
+            </>
+        ) : (
         <>
             <Header>
                 <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
                 <p>Carrinho</p>
             </Header>
-
+            <Content>
+                {cart.products.map((product) => {
+                    return (
+                        <Product>
+                            <img src={product.url} alt="Imagem do produto" />
+                            <Container>
+                                <p>{product.name}</p>
+                                <h1>R$ {product.price}</h1>
+                                <p>Quantidade: {product.qty}</p>
+                                <h2>Remover</h2>
+                            </Container>
+                        </Product>
+                    )
+                }
+                )}
+            </Content>
+            <Footer>
+                <h1>Detalhes</h1>
+                {cart.products.map((product) => {
+                    return (
+                        <>
+                            <Details>
+                                <p className="name">{product.name}</p>
+                                <p className="price">R$ {product.price}</p>
+                            </Details>
+                        </>
+                    )
+                }
+                )}
+                <Details>
+                    <h1>Valor total</h1>
+                    <h1>R$ {cart.totalValue}</h1>
+                </Details>
+                <button>Pagamento</button>
+            </Footer>
         </>
+        )
     )
 }
+
+const Loading = styled.div`
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+p {
+        font-size: 20px;
+        padding: 15px;
+    }
+`;
 
 const Header = styled.header`
     width: 100vw;   
@@ -241,38 +291,3 @@ const Details = styled.div`
     display: flex;
     justify-content: space-between;
 `
-/*<Content>
-                {cart[0].products.map((product) => {
-                    return (
-                        <Product>
-                            <img src={cart[0].products[0].url} alt="Imagem do produto" />
-                            <Container>
-                                <p>{product.name}</p>
-                                <h1>R$ {product.price}</h1>
-                                <p>Quantidade: {product.qty}</p>
-                                <h2>Remover</h2>
-                            </Container>
-                        </Product>
-                    )
-                }
-                )}
-            </Content>
-            <Footer>
-                <h1>Detalhes</h1>
-                {cart[0].products.map((product) => {
-                    return (
-                        <>
-                            <Details>
-                                <p className="name">{product.name}</p>
-                                <p className="price">R$ {product.price}</p>
-                            </Details>
-                        </>
-                    )
-                }
-                )}
-                <Details>
-                    <h1>Valor total</h1>
-                    <h1>R$ {cart[0].totalValue}</h1>
-                </Details>
-                <button>Pagamento</button>
-            </Footer>*/
