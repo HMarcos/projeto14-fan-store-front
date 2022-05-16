@@ -70,6 +70,25 @@ export default function Cart() {
         });
     }
 
+    function deleteProduct(idProduct) {
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        }
+
+        const promise = axios.delete(`${API_LINK}/cart/${idProduct}`, config);
+        promise.then(res => {
+            console.log('deletou');
+            renderCart();
+        });
+
+        promise.catch(() => {
+            alert("Erro ao deletar produto do carrinho.");
+        });
+    }
+
     return (
         loading ? (
             <>
@@ -94,7 +113,7 @@ export default function Cart() {
                                         <p>{product.name}</p>
                                         <h1>R$ {product.price.$numberDecimal.replace(".", ",")}</h1>
                                         <p>Quantidade: {product.qty}</p>
-                                        <h2>Remover</h2>
+                                        <h2 onClick={(() => deleteProduct(product.productId))}>Remover</h2>
                                     </Container>
                                 </Product>
                             </>
