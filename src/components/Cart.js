@@ -60,9 +60,8 @@ export default function Cart() {
 
         const promise = axios.get(`${API_LINK}/cart`, config);
         promise.then((res) => {
-            setLoading(false)
             setCart(res.data);
-            console.log(cart);
+            setLoading(false);
         });
 
         promise.catch(() => {
@@ -80,47 +79,49 @@ export default function Cart() {
                 </Loading>
             </>
         ) : (
-        <>
-            <Header>
-                <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
-                <p>Carrinho</p>
-            </Header>
-            <Content>
-                {cart.products.map((product) => {
-                    return (
-                        <Product>
-                            <img src={product.url} alt="Imagem do produto" />
-                            <Container>
-                                <p>{product.name}</p>
-                                <h1>R$ {product.price}</h1>
-                                <p>Quantidade: {product.qty}</p>
-                                <h2>Remover</h2>
-                            </Container>
-                        </Product>
-                    )
-                }
-                )}
-            </Content>
-            <Footer>
-                <h1>Detalhes</h1>
-                {cart.products.map((product) => {
-                    return (
-                        <>
-                            <Details>
-                                <p className="name">{product.name}</p>
-                                <p className="price">R$ {product.price}</p>
-                            </Details>
-                        </>
-                    )
-                }
-                )}
-                <Details>
-                    <h1>Valor total</h1>
-                    <h1>R$ {cart.totalValue}</h1>
-                </Details>
-                <button>Pagamento</button>
-            </Footer>
-        </>
+            <>
+                <Header>
+                    <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/'))}></img>
+                    <p>Carrinho</p>
+                </Header>
+                <Content>
+                    {cart.products.map((product) => {
+                        return (
+                            <>
+                                <Product>
+                                    <img src={product.url} alt="Imagem do produto" />
+                                    <Container>
+                                        <p>{product.name}</p>
+                                        <h1>R$ {product.price.$numberDecimal.replace(".", ",")}</h1>
+                                        <p>Quantidade: {product.qty}</p>
+                                        <h2>Remover</h2>
+                                    </Container>
+                                </Product>
+                            </>
+                        )
+                    }
+                    )}
+                </Content>
+                <Footer>
+                    <h1>Detalhes</h1>
+                    {cart.products.map((product) => {
+                        return (
+                            <>
+                                <Details>
+                                    <p className="name">{product.name}</p>
+                                    <p className="price">R$ {product.price.$numberDecimal.replace(".", ",")}</p>
+                                </Details>
+                            </>
+                        )
+                    }
+                    )}
+                    <Details>
+                        <h1>Valor total</h1>
+                        <h1>R$ {cart.totalValue}</h1>
+                    </Details>
+                    <button>Pagamento</button>
+                </Footer>
+            </>
         )
     )
 }
