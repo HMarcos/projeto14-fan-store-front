@@ -215,7 +215,7 @@ export default function Home() {
                             <p>Início</p>
                         </Option>
                         <Option>
-                            <img src={ordersIcon} alt="order-icon" onClick={() => navigate("/")} />
+                            <img src={ordersIcon} alt="order-icon" onClick={() => navigate("/history")} />
                             <p>Histórico</p>
                         </Option>
                         <Option>

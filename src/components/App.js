@@ -13,6 +13,7 @@ import Address from "./Address";
 import InfoLogin from "./InfoLogin";
 import CheckOut from "./CheckOut";
 import SuccessfulPayment from "./SuccessfulPayment";
+import  History  from "./History";
 
 import RegisterContext from "../contexts/RegisterContext";
 import UserContext from "../contexts/UserContext";
@@ -44,7 +45,9 @@ function App() {
                             <Route path="/product/:productId" element={< Product />} />
                             <Route path="/info-login/:infoId" element={<InfoLogin />} />
                             <Route path="/check-out" element={<CheckOut />} />
-                            <Route path="/successful-payment" element={<SuccessfulPayment />} />
+                            <Route path="/successful-payment" element={ <SuccessfulPayment />}/>
+                            <Route path="/history" element={ <History /> } />
+
                         </Routes>
                     </BrowserRouter>
                 </RegisterContext.Provider>
