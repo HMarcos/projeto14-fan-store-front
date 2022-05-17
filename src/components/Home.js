@@ -7,11 +7,11 @@ import { Oval } from "react-loader-spinner";
 
 import UserContext from "../contexts/UserContext";
 
-import logo from "../assets/logofanstore.png"
-import logoutIcon from "../assets/iconlogout.svg"
-import cartIcon from "../assets/iconcart.png"
-import homeIcon from "../assets/iconhome.png"
-import ordersIcon from "../assets/iconorder.png"
+import logo from "../assets/logofanstore.png";
+import logoutIcon from "../assets/iconlogout.svg";
+import cartIcon from "../assets/iconcart.png";
+import homeIcon from "../assets/iconhome.png";
+import ordersIcon from "../assets/iconorder.png";
 
 
 export default function Home() {
@@ -20,6 +20,7 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [franchises, setFranchises] = useState([]);
+    const [query, setQuery] = useState({ category: 0, franchise: 0 });
 
     const { user, setUser } = useContext(UserContext);
 
@@ -30,7 +31,7 @@ export default function Home() {
             setProducts(res.data);
         })
         promise.catch(() => {
-            alert('Não foi possível carregar os produtos.')
+            alert('Não foi possível carregar os produtos.');
             setLoading(false)
         })
     }, []);
@@ -42,7 +43,7 @@ export default function Home() {
             setCategories(res.data);
         })
         promise.catch(() => {
-            alert('Não foi possível carregar as categorias.')
+            alert('Não foi possível carregar as categorias.');
             setLoading(false)
         })
     }, []);
@@ -54,7 +55,7 @@ export default function Home() {
             setFranchises(res.data);
         })
         promise.catch(() => {
-            alert('Não foi possível carregar as franquias.')
+            alert('Não foi possível carregar as franquias.');
             setLoading(false)
         })
     }, []);
@@ -69,7 +70,7 @@ export default function Home() {
         const promise = axios.put(`${API_LINK}/logout`, {}, config);
 
         promise.then((response) => {
-            setUser({token: ""});
+            setUser({ token: "" });
             navigate("/sign-in");
         });
 
@@ -89,6 +90,75 @@ export default function Home() {
         })
     }
 
+    function updateCategoryQuery(category) {
+
+        let updatedCategory = category;
+
+        if (category === query.category) {
+            setQuery({ ...query, category: 0 });
+            updatedCategory = 0;
+        }
+        else {
+            setQuery({ ...query, category: category });
+        }
+
+        getFilterdProducts(updatedCategory, query.franchise);
+    }
+
+    function updateFranchiseQuery(franchise) {
+
+        let updatedFranchise = franchise;
+
+        if (franchise === query.franchise) {
+            setQuery({ ...query, franchise: 0 });
+            updatedFranchise = 0;
+        }
+        else {
+            setQuery({ ...query, franchise: franchise });
+        }
+
+        getFilterdProducts(query.category, updatedFranchise);
+    }
+
+    function getFilterdProducts(category, franchise) {
+        let categoryQuery = "";
+        let franchiseQuery = "";
+        let finalQuery = "";
+
+        if (category !== 0) {
+            categoryQuery = `category=${category}`;
+        }
+
+        if (franchise !== 0) {
+            franchiseQuery = `franchise=${franchise}`;
+        }
+
+
+        if (categoryQuery !== "" && franchiseQuery !== "") {
+            finalQuery = `?${categoryQuery}&${franchiseQuery}`;
+        }
+        else if (categoryQuery !== "") {
+            finalQuery = `?${categoryQuery}`;
+        }
+        else if (franchiseQuery !== "") {
+            finalQuery = `?${franchiseQuery}`;
+        }
+
+        setLoading(true);
+
+        console.log(finalQuery);
+
+        const promise = axios.get(`${API_LINK}/products${finalQuery}`);
+        promise.then((res) => {
+            setLoading(false);
+            setProducts(res.data);
+        })
+        promise.catch(() => {
+            alert('Não foi possível carregar os produtos.');
+            setLoading(false);
+        })
+    }
+
     return (
         <>
             <Header>
@@ -98,16 +168,16 @@ export default function Home() {
                     <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/cart")} className="icon" />
                 </Container>
                 <Menu>
-                    {categories.map(({ name }) =>
-                        <div>
-                            <p>{name}</p>
+                    {categories.map(({ name, idCategory }) =>
+                        <div onClick={() => { updateCategoryQuery(idCategory) }}>
+                            <p className={idCategory === query.category ? "selected" : ""}>{name}</p>
                         </div>
                     )}
                 </Menu>
                 <Menu>
-                    {franchises.map(({ name }) =>
-                        <div>
-                            <p>{name}</p>
+                    {franchises.map(({ name, idFranchise }) =>
+                        <div onClick={() => { updateFranchiseQuery(idFranchise) }}>
+                            <p className={idFranchise === query.franchise ? "selected" : ""}>{name}</p>
                         </div>
                     )}
                 </Menu>
@@ -220,6 +290,8 @@ const Menu = styled.div`
     margin-bottom: 10px;
     overflow-x: scroll;
 
+    cursor: pointer;
+
     p {
         border: 1px solid #ffffff;
         border-radius: 24px;
@@ -228,10 +300,16 @@ const Menu = styled.div`
         display: flex;
         width: max-content;
     }
-`
+
+    .selected{
+        background-color: #ffffff;
+        color: #2D7AEF;
+    }
+`;
 
 const Products = styled.main`
-    height: 100vh - 170px - 67px;
+    min-height: calc(100vh - 170px - 67px);
+    height: fit-content;
     width: 100vw;
     margin-top: 170px;
     margin-bottom: 72px;
