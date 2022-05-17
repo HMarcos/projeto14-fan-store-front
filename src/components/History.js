@@ -26,11 +26,21 @@ export default function History() {
         const promise = axios.get(`${API_LINK}/history`, config);
         promise.then((res) => {
             setCarts(res.data);
-            console.log(res.data);
             setLoading(false);
         });
-        promise.catch(() => {
-            alert('Não foi possível carregar o histórico.');
+        promise.catch((error) => {
+            const { status, data } = error.response;
+
+            if (Number(status) !== 500 && Number(status) !== 422) {
+                navigate('/info-login/3');
+                return;
+            }
+
+            else {
+                alert(`Não foi possível carregar o histórico do usuário.
+            Erro ${status}: ${data} `);
+
+            }
             setLoading(false);
         });
     }, []);
@@ -52,14 +62,13 @@ export default function History() {
                 <Purchases>
                     {carts.map((cart) => {
                         const data = new dayjs(cart.time).format("DD/MM/YYYY");
-                        console.log(data);
-                        return(
-                        <>
-                            <p>Carrinho: {cart.cartId}</p>
-                            <h1>Data: {data}</h1>
-                            <h1>Valor: R$ {cart.value}</h1>
-                            <p>Forma de pagamento: {cart.paymentType}</p>
-                        </>
+                        return (
+                            <div>
+                                <p>Carrinho: {cart.cartId}</p>
+                                <h1>Data: {data}</h1>
+                                <h1>Valor: R$ {cart.value}</h1>
+                                <p>Forma de pagamento: {cart.paymentType}</p>
+                            </div>
                         )
                     }
                     )}
@@ -116,6 +125,17 @@ const Purchases = styled.div`
     width: 100vw;
     background: #f5f5f5;
     padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    div {
+        margin-bottom: 20px;
+        width: 380px;
+        box-shadow: 0px 21px 43px rgba(58, 76, 130, 0.0722656);
+    }
+    
 
     p {
         font-weight: 700;
