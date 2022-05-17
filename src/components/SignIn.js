@@ -38,7 +38,6 @@ function SignIn() {
 
         promise.catch((error) => {
             const { status, data } = error.response;
-            console.log(error);
             alert(`Não foi possível realizar o login.
             Erro ${status}: ${data} `);
 

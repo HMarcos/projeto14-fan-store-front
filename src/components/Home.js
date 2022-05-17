@@ -9,6 +9,7 @@ import UserContext from "../contexts/UserContext";
 
 import logo from "../assets/logofanstore.png";
 import logoutIcon from "../assets/iconlogout.svg";
+import userIcon from "../assets/iconuser.png";
 import cartIcon from "../assets/iconcart.png";
 import homeIcon from "../assets/iconhome.png";
 import ordersIcon from "../assets/iconorder.png";
@@ -146,8 +147,6 @@ export default function Home() {
 
         setLoading(true);
 
-        console.log(finalQuery);
-
         const promise = axios.get(`${API_LINK}/products${finalQuery}`);
         promise.then((res) => {
             setLoading(false);
@@ -168,15 +167,15 @@ export default function Home() {
                     <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/cart")} className="icon" />
                 </Container>
                 <Menu>
-                    {categories.map(({ name, idCategory }) =>
-                        <div onClick={() => { updateCategoryQuery(idCategory) }}>
+                    {categories.map(({ name, idCategory }, index) =>
+                        <div key={index} onClick={() => { updateCategoryQuery(idCategory) }}>
                             <p className={idCategory === query.category ? "selected" : ""}>{name}</p>
                         </div>
                     )}
                 </Menu>
                 <Menu>
-                    {franchises.map(({ name, idFranchise }) =>
-                        <div onClick={() => { updateFranchiseQuery(idFranchise) }}>
+                    {franchises.map(({ name, idFranchise }, index) =>
+                        <div key={index} onClick={() => { updateFranchiseQuery(idFranchise) }}>
                             <p className={idFranchise === query.franchise ? "selected" : ""}>{name}</p>
                         </div>
                     )}
@@ -194,7 +193,7 @@ export default function Home() {
                     <Products>
                         {products.map(({ url, name, price, idFranchise, _id, franchises }) => {
                             return (
-                                <ContainerProducts key={name} onClick={() => navigate(`/product/${_id}`)}>
+                                <ContainerProducts key={_id} onClick={() => navigate(`/product/${_id}`)}>
                                     <img src={url} alt="Imagem do produto"></img>
                                     <div className="info">
                                         <p className="product-name">{name}</p>
@@ -220,8 +219,8 @@ export default function Home() {
                             <p>Histórico</p>
                         </Option>
                         <Option>
-                            <img src={logoutIcon} alt="logout-icon" onClick={logout} />
-                            <p>Logout</p>
+                            <img src={userIcon} alt="user-icon" onClick={() => navigate("/sign-in")} />
+                            <p>Login</p>
                         </Option>
                     </Footer>
                 </>
