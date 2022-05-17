@@ -163,8 +163,10 @@ export default function Home() {
             <Header>
                 <Container>
                     <img src={logo} alt="logo" />
-                    <img src={logoutIcon} onClick={logout} alt="logout-icon" className="icon" />
-                    <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/cart")} className="icon" />
+                    <div>
+                        <img src={logoutIcon} onClick={logout} alt="logout-icon" className="icon" />
+                        <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/cart")} className="icon" />
+                    </div>
                 </Container>
                 <Menu>
                     {categories.map(({ name, idCategory }, index) =>
@@ -256,6 +258,13 @@ const Header = styled.header`
         height: 38px;
         margin-right: 20px;
     }
+
+    @media(min-width: 910px){
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 `
 
 const Footer = styled.footer`
@@ -277,9 +286,15 @@ const Footer = styled.footer`
 
 const Container = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     padding: 21px;
+
+    @media(min-width: 910px){
+        width: 910px;
+
+        margin: 0 auto;
+    }
 `
 
 const Menu = styled.div` 
@@ -304,6 +319,13 @@ const Menu = styled.div`
         background-color: #ffffff;
         color: #2D7AEF;
     }
+
+    @media(min-width: 910px){
+        width: 910px;
+        justify-content: center;
+        align-items: center;
+        overflow-x: auto;
+    }
 `;
 
 const Products = styled.main`
@@ -319,7 +341,12 @@ const Products = styled.main`
     justify-content: space-evenly;
     /*justify-content: center;
     column-gap: 20px;*/
-`
+
+    @media(min-width: 910px){
+        width: 910px;
+        justify-content: flex-start;
+    }
+`;
 
 const ContainerProducts = styled.div`
     border: 1px solid #E5E5E5;
@@ -339,6 +366,10 @@ const ContainerProducts = styled.div`
     background-color: #FFFFFF;
    
     align-items: center;
+
+    @media(min-width: 910px){
+        margin-left: 25px;
+    }
 
     img {
         display:flex;

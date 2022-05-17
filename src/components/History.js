@@ -66,7 +66,7 @@ export default function History() {
                             <div>
                                 <p>Carrinho: {cart.cartId}</p>
                                 <h1>Data: {data}</h1>
-                                <h1>Valor: R$ {cart.value}</h1>
+                                <h1>Valor: R$ {parseFloat(cart.value).toFixed(2).replace(".", ",")}</h1>
                                 <p>Forma de pagamento: {cart.paymentType}</p>
                             </div>
                         )
