@@ -1,15 +1,18 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import API_LINK from '../data/links';
 import { Oval } from "react-loader-spinner";
 
-import logo from "../assets/logofanstore.png"
-import userIcon from "../assets/iconuser.png"
-import cartIcon from "../assets/iconcart.png"
-import homeIcon from "../assets/iconhome.png"
-import ordersIcon from "../assets/iconorder.png"
+import UserContext from "../contexts/UserContext";
+
+import logo from "../assets/logofanstore.png";
+import logoutIcon from "../assets/iconlogout.svg";
+import userIcon from "../assets/iconuser.png";
+import cartIcon from "../assets/iconcart.png";
+import homeIcon from "../assets/iconhome.png";
+import ordersIcon from "../assets/iconorder.png";
 
 
 export default function Home() {
@@ -18,6 +21,9 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [franchises, setFranchises] = useState([]);
+    const [query, setQuery] = useState({ category: 0, franchise: 0 });
+
+    const { user, setUser } = useContext(UserContext);
 
     useEffect(() => {
         const promise = axios.get(`${API_LINK}/products`);
@@ -26,7 +32,7 @@ export default function Home() {
             setProducts(res.data);
         })
         promise.catch(() => {
-            alert('Não foi possível carregar os produtos.')
+            alert('Não foi possível carregar os produtos.');
             setLoading(false)
         })
     }, []);
@@ -38,7 +44,7 @@ export default function Home() {
             setCategories(res.data);
         })
         promise.catch(() => {
-            alert('Não foi possível carregar as categorias.')
+            alert('Não foi possível carregar as categorias.');
             setLoading(false)
         })
     }, []);
@@ -50,30 +56,127 @@ export default function Home() {
             setFranchises(res.data);
         })
         promise.catch(() => {
-            alert('Não foi possível carregar as franquias.')
+            alert('Não foi possível carregar as franquias.');
             setLoading(false)
         })
     }, []);
+
+    function logout() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`
+            }
+        };
+
+        const promise = axios.put(`${API_LINK}/logout`, {}, config);
+
+        promise.then((response) => {
+            setUser({ token: "" });
+            navigate("/sign-in");
+        });
+
+        promise.catch((error) => {
+            const { status, data } = error.response;
+
+            if (Number(status) !== 500 && Number(status) !== 422) {
+                navigate('/info-login/2');
+                return;
+            }
+
+            else {
+                alert(`Não foi possível deslogar o usuário!
+            Erro ${status}: ${data} `);
+
+            }
+        })
+    }
+
+    function updateCategoryQuery(category) {
+
+        let updatedCategory = category;
+
+        if (category === query.category) {
+            setQuery({ ...query, category: 0 });
+            updatedCategory = 0;
+        }
+        else {
+            setQuery({ ...query, category: category });
+        }
+
+        getFilterdProducts(updatedCategory, query.franchise);
+    }
+
+    function updateFranchiseQuery(franchise) {
+
+        let updatedFranchise = franchise;
+
+        if (franchise === query.franchise) {
+            setQuery({ ...query, franchise: 0 });
+            updatedFranchise = 0;
+        }
+        else {
+            setQuery({ ...query, franchise: franchise });
+        }
+
+        getFilterdProducts(query.category, updatedFranchise);
+    }
+
+    function getFilterdProducts(category, franchise) {
+        let categoryQuery = "";
+        let franchiseQuery = "";
+        let finalQuery = "";
+
+        if (category !== 0) {
+            categoryQuery = `category=${category}`;
+        }
+
+        if (franchise !== 0) {
+            franchiseQuery = `franchise=${franchise}`;
+        }
+
+
+        if (categoryQuery !== "" && franchiseQuery !== "") {
+            finalQuery = `?${categoryQuery}&${franchiseQuery}`;
+        }
+        else if (categoryQuery !== "") {
+            finalQuery = `?${categoryQuery}`;
+        }
+        else if (franchiseQuery !== "") {
+            finalQuery = `?${franchiseQuery}`;
+        }
+
+        setLoading(true);
+
+        const promise = axios.get(`${API_LINK}/products${finalQuery}`);
+        promise.then((res) => {
+            setLoading(false);
+            setProducts(res.data);
+        })
+        promise.catch(() => {
+            alert('Não foi possível carregar os produtos.');
+            setLoading(false);
+        })
+    }
 
     return (
         <>
             <Header>
                 <Container>
                     <img src={logo} alt="logo" />
-                    <img src={userIcon} alt="user-icon" onClick={() => navigate("/user")} className="icon" />
+                    <img src={logoutIcon} onClick={logout} alt="logout-icon" className="icon" />
                     <img src={cartIcon} alt="cart-icon" onClick={() => navigate("/cart")} className="icon" />
                 </Container>
                 <Menu>
-                    {categories.map(({ name }) =>
-                        <div>
-                            <p>{name}</p>
+                    {categories.map(({ name, idCategory }, index) =>
+                        <div key={index} onClick={() => { updateCategoryQuery(idCategory) }}>
+                            <p className={idCategory === query.category ? "selected" : ""}>{name}</p>
                         </div>
                     )}
                 </Menu>
                 <Menu>
-                    {franchises.map(({ name }) =>
-                        <div>
-                            <p>{name}</p>
+                    {franchises.map(({ name, idFranchise }, index) =>
+                        <div key={index} onClick={() => { updateFranchiseQuery(idFranchise) }}>
+                            <p className={idFranchise === query.franchise ? "selected" : ""}>{name}</p>
                         </div>
                     )}
                 </Menu>
@@ -90,7 +193,7 @@ export default function Home() {
                     <Products>
                         {products.map(({ url, name, price, idFranchise, _id, franchises }) => {
                             return (
-                                <ContainerProducts key={name} onClick={() => navigate(`/product/${_id}`)}>
+                                <ContainerProducts key={_id} onClick={() => navigate(`/product/${_id}`)}>
                                     <img src={url} alt="Imagem do produto"></img>
                                     <div className="info">
                                         <p className="product-name">{name}</p>
@@ -112,12 +215,12 @@ export default function Home() {
                             <p>Início</p>
                         </Option>
                         <Option>
-                            <img src={ordersIcon} alt="user-icon" onClick={() => navigate("/")} />
+                            <img src={ordersIcon} alt="order-icon" onClick={() => navigate("/")} />
                             <p>Histórico</p>
                         </Option>
                         <Option>
-                            <img src={userIcon} alt="order-icon" onClick={() => navigate("/user")} />
-                            <p>Usuário</p>
+                            <img src={userIcon} alt="user-icon" onClick={() => navigate("/sign-in")} />
+                            <p>Login</p>
                         </Option>
                     </Footer>
                 </>
@@ -147,6 +250,7 @@ const Header = styled.header`
         }
     }
 
+    
     img {
         width: 221px;
         height: 38px;
@@ -185,6 +289,8 @@ const Menu = styled.div`
     margin-bottom: 10px;
     overflow-x: scroll;
 
+    cursor: pointer;
+
     p {
         border: 1px solid #ffffff;
         border-radius: 24px;
@@ -193,10 +299,16 @@ const Menu = styled.div`
         display: flex;
         width: max-content;
     }
-`
+
+    .selected{
+        background-color: #ffffff;
+        color: #2D7AEF;
+    }
+`;
 
 const Products = styled.main`
-    height: 100vh - 170px - 67px;
+    min-height: calc(100vh - 170px - 67px);
+    height: fit-content;
     width: 100vw;
     margin-top: 170px;
     margin-bottom: 72px;
