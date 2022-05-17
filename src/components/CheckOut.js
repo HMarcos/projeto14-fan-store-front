@@ -51,6 +51,11 @@ export default function CheckOut() {
 
     function finishPayment() {
 
+        if (payment === "" || payment === "-- pagamento --"){
+            alert("Selecione uma opção de pagamento!")
+            return;
+        }
+
         const config = {
             headers: {
                 Authorization: `Bearer ${user.token}`,
@@ -92,6 +97,7 @@ export default function CheckOut() {
                 <Content>
                     <p>Selecione a forma de pagamento:</p>
                     <select onChange={(e) => setPayment(e.target.value)}>
+                        <option disabled selected value> -- pagamento -- </option>
                         <option>Cartão de crédito</option>
                         <option>Cartão de débito</option>
                         <option>PIX</option>
