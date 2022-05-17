@@ -42,7 +42,9 @@ function SignUp() {
 
     return (
         <Content>
-            <Logo src={logo} alt="logo fan store" />
+            <Link to="/">
+                <Logo src={logo} alt="logo fan store" />
+            </Link>
             <RegisterSpan> Cadastre-se: </RegisterSpan>
             <RegisterForm onSubmit={goToAddresForm}>
                 <input

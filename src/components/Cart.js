@@ -16,8 +16,6 @@ export default function Cart() {
 
     const { user } = useContext(UserContext);
 
-    console.log(cart);
-
     useEffect(renderCart, []);
 
     function renderCart() {
@@ -61,7 +59,6 @@ export default function Cart() {
 
         const promise = axios.delete(`${API_LINK}/cart/${idProduct}`, config);
         promise.then(res => {
-            console.log('deletou');
             renderCart();
         });
 
@@ -85,34 +82,33 @@ export default function Cart() {
                     <p>Carrinho</p>
                 </Header>
                 <Content>
-                    <Overlay className={cart.products.length === 0? "display": "hide"}>
+                    <Overlay className={cart.products.length === 0 ? "display" : "hide"}>
                         <p>O seu carrinho está vazio! <br /> Aproveite a loja e compre os melhores produtos! </p>
                         <Link to="/">
                             <span>Voltar para a <strong>página principal</strong></span>
                         </Link>
                     </Overlay>
-                    {cart.products.map((product) => {
+                    {cart.products.map((product, index) => {
                         return (
-                            <>
-                                <Product>
-                                    <img src={product.url} alt="Imagem do produto" />
-                                    <Container>
-                                        <p className="name">{product.name}</p>
-                                        <h1>R$ {(product.price.$numberDecimal).replace(".", ",")}</h1>
-                                        <p>Quantidade: {product.qty}</p>
-                                        <h2 onClick={(() => deleteProduct(product.productId))}>Remover</h2>
-                                    </Container>
-                                </Product>
-                            </>
+
+                            <Product key={index}>
+                                <img src={product.url} alt="Imagem do produto" />
+                                <Container key={index}>
+                                    <p className="name">{product.name}</p>
+                                    <h1>R$ {(product.price.$numberDecimal).replace(".", ",")}</h1>
+                                    <p>Quantidade: {product.qty}</p>
+                                    <h2 onClick={(() => deleteProduct(product.productId))}>Remover</h2>
+                                </Container>
+                            </Product>
                         )
                     }
                     )}
                     <InfoPrice>
                         <h1>Detalhes</h1>
-                        {cart.products.map((product) => {
+                        {cart.products.map((product, index) => {
                             return (
                                 <>
-                                    <Details>
+                                    <Details key={index}>
                                         <p className="name">{product.name}</p>
                                         <p className="price">R$ {(parseFloat(product.price.$numberDecimal) * parseInt(product.qty)).toFixed(2).replace(".", ",")}</p>
                                     </Details>

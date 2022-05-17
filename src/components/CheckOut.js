@@ -51,6 +51,11 @@ export default function CheckOut() {
 
     function finishPayment() {
 
+        if (payment === "" || payment === "-- pagamento --"){
+            alert("Selecione uma opção de pagamento!")
+            return;
+        }
+
         const config = {
             headers: {
                 Authorization: `Bearer ${user.token}`,
@@ -60,7 +65,6 @@ export default function CheckOut() {
         const body = {
             paymentType: payment,
         }
-        console.log(body);
 
         const promise = axios.post(`${API_LINK}/paymentinfo`, body, config);
         promise.then((res) => {
@@ -77,58 +81,59 @@ export default function CheckOut() {
     }
 
     return (
-            loading ? (
-                <>
-                    <Loading>
-                        <p>Carregando...</p>
-                        <Oval color="#FFFFFF" height={80} width={80} />
-                    </Loading>
-                </>
-            ) : (
-                <>
-                    <Header>
-                        <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/cart'))}></img>
-                        <p>Pagamento</p>
-                    </Header>
-                    <Content>
-                        <p>Selecione a forma de pagamento:</p>
-                        <select onChange={(e) => setPayment(e.target.value)}>
-                            <option>Cartão de crédito</option>
-                            <option>Cartão de débito</option>
-                            <option>PIX</option>
-                            <option>Boleto</option>
-                        </select>
-                        <p>Informações de entrega:</p>
-                        <p className="adress">{cart.userAddress.street}, {cart.userAddress.number} </p>
-                        <p className="adress">{cart.userAddress.city}, {cart.userAddress.state} </p>
-                    </Content>
-                    <InfoPrice>
-                        <h1>Detalhes da compra</h1>
-                        {cart.products.map((product) => {
-                            return (
-                                <>
-                                    <Details>
-                                        <p className="name">{product.name}</p>
-                                        <p className="price">R$ {(parseFloat(product.price.$numberDecimal) * parseInt(product.qty)).toFixed(2).replace(".", ",")}</p>
-                                    </Details>
-                                </>
-                            )
-                        }
-                        )}
-                        <Details>
-                            <h1>Valor total</h1>
-                            <h1>R$ {parseFloat(cart.totalValue).toFixed(2).replace(".", ",")}</h1>
-                        </Details>
-                    </InfoPrice>
-                    <Footer>
-                        <button onClick={(() => finishPayment())}>Finalizar compra</button>
-                    </Footer>
-                </>
-            )
+        loading ? (
+            <>
+                <Loading>
+                    <p>Carregando...</p>
+                    <Oval color="#FFFFFF" height={80} width={80} />
+                </Loading>
+            </>
+        ) : (
+            <>
+                <Header>
+                    <img src={returnIcon} alt="Seta para retornar" className="icon" onClick={(() => navigate('/cart'))}></img>
+                    <p>Pagamento</p>
+                </Header>
+                <Content>
+                    <p>Selecione a forma de pagamento:</p>
+                    <select onChange={(e) => setPayment(e.target.value)}>
+                        <option disabled selected value> -- pagamento -- </option>
+                        <option>Cartão de crédito</option>
+                        <option>Cartão de débito</option>
+                        <option>PIX</option>
+                        <option>Boleto</option>
+                    </select>
+                    <p>Informações de entrega:</p>
+                    <p className="adress">{cart.userAddress.street}, {cart.userAddress.number} </p>
+                    <p className="adress">{cart.userAddress.city}, {cart.userAddress.state} </p>
+                </Content>
+                <InfoPrice>
+                    <h1>Detalhes da compra</h1>
+                    {cart.products.map((product, index) => {
+                        return (
+                            <>
+                                <Details key={index}>
+                                    <p className="name">{product.name}</p>
+                                    <p className="price">R$ {(parseFloat(product.price.$numberDecimal) * parseInt(product.qty)).toFixed(2).replace(".", ",")}</p>
+                                </Details>
+                            </>
+                        )
+                    }
+                    )}
+                    <Details>
+                        <h1>Valor total</h1>
+                        <h1>R$ {parseFloat(cart.totalValue).toFixed(2).replace(".", ",")}</h1>
+                    </Details>
+                </InfoPrice>
+                <Footer>
+                    <button onClick={(() => finishPayment())}>Finalizar compra</button>
+                </Footer>
+            </>
         )
-    }
+    )
+}
 
-    const Loading = styled.div`
+const Loading = styled.div`
     height:100vh;
     display: flex;
     flex-direction: column;
@@ -139,7 +144,7 @@ p {
     }
 `;
 
-    const Header = styled.header`
+const Header = styled.header`
     width: 100vw;   
     height: 70px;
     background:#2D7AEF;
@@ -169,7 +174,7 @@ p {
     }
 `
 
-    const Content = styled.div`
+const Content = styled.div`
     margin-top: 90px;
     p {
         font-weight: 700;
@@ -208,7 +213,7 @@ p {
     }
 `
 
-    const InfoPrice = styled.div`
+const InfoPrice = styled.div`
 margin-top: 30px;
     height: fit-content;
     width: 345px;
@@ -257,13 +262,13 @@ margin-top: 30px;
    }
 `;
 
-    const Details = styled.div`
+const Details = styled.div`
     width: 345px;
     display: flex;
     justify-content: space-between;
 `;
 
-    const Footer = styled.footer`
+const Footer = styled.footer`
     height: fit-content;
     width: 100vw;
     display: flex;

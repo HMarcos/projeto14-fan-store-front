@@ -51,13 +51,12 @@ export default function Product() {
         const product = {
             productId,
             qty,
-            type: size === "unique" ? size : size.slice(0,1).toUpperCase() 
+            type: size === "unique" ? size : size.slice(0, 1).toUpperCase()
         }
 
         const promise = axios.put(`${API_LINK}/cart`, product, config);
 
         promise.then((response) => {
-            alert("Produto adicionado ao carrinho com sucesso!");
             navigate('/cart');
         })
 
@@ -65,9 +64,6 @@ export default function Product() {
             const { status, data } = error.response;
 
             if (Number(status) !== 500 && Number(status) !== 422) {
-                /*alert(`Não foi possível adicionar o produto ao carrinho.
-            Usuário precisa estar logado no sistema. 
-            Erro ${status}: ${data} `);*/
                 navigate('/info-login/0');
                 return;
             }
@@ -99,16 +95,16 @@ export default function Product() {
                             <h1>{product.name}</h1>
                             <h2>R$ {product.price.$numberDecimal.replace(".", ",")}</h2>
                             <p>{product.description}</p>
-                            
+
                             <Selection>
                                 {product.idCategory === 1 ? (
                                     <>
-                                        <p className={size === "pQty"? "selected": ""} onClick={(() => setSize('pQty'))}>P</p>
-                                        <p className={size === "mQty"? "selected": ""} onClick={(() => setSize('mQty'))}>M</p>
-                                        <p className={size === "gQty"? "selected": ""} onClick={(() => setSize('gQty'))}>G</p>
+                                        <p className={size === "pQty" ? "selected" : ""} onClick={(() => setSize('pQty'))}>P</p>
+                                        <p className={size === "mQty" ? "selected" : ""} onClick={(() => setSize('mQty'))}>M</p>
+                                        <p className={size === "gQty" ? "selected" : ""} onClick={(() => setSize('gQty'))}>G</p>
                                         <select onChange={(e) => setQty(Number(e.target.value))}>
-                                            {mappingProductQty(product[size]).map((qty) =>
-                                                <option>
+                                            {mappingProductQty(product[size]).map((qty, index) =>
+                                                <option key={index}>
                                                     {qty}
                                                 </option>
                                             )}
@@ -119,8 +115,8 @@ export default function Product() {
                                     <>
                                         <h1>Quantidade:</h1>
                                         <select onChange={(e) => setQty(Number(e.target.value))}>
-                                            {mappingProductQty(product.uniqueQty).map((qty) =>
-                                                <option>
+                                            {mappingProductQty(product.uniqueQty).map((qty, index) =>
+                                                <option key={index}>
                                                     {qty}
                                                 </option>
                                             )}
@@ -130,7 +126,7 @@ export default function Product() {
                                 )}
 
                             </Selection>
-                            <span className="soldout">{soldout ? "ESGOTADO!": ""}</span>
+                            <span className="soldout">{soldout ? "ESGOTADO!" : ""}</span>
                         </main>
                         <Footer onClick={(() => goToCart())}>
                             <button disabled={qty === 0 ? true : false}>Adicionar ao carrinho</button>

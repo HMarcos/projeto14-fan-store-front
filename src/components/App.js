@@ -4,14 +4,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from "./GlobalStyle";
 
 import Home from "./Home";
-import User from "./User"
-import Cart from "./Cart"
-import Product from "./Product"
+import User from "./User";
+import Cart from "./Cart";
+import Product from "./Product";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Address from "./Address";
 import InfoLogin from "./InfoLogin";
-import CheckOut from "./CheckOut"
+import CheckOut from "./CheckOut";
 import SuccessfulPayment from "./SuccessfulPayment";
 import  History  from "./History";
 
@@ -47,6 +47,7 @@ function App() {
                             <Route path="/check-out" element={<CheckOut />} />
                             <Route path="/successful-payment" element={ <SuccessfulPayment />}/>
                             <Route path="/history" element={ <History /> } />
+
                         </Routes>
                     </BrowserRouter>
                 </RegisterContext.Provider>
